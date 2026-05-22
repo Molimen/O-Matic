@@ -1,1 +1,214 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  /* color */
+  --color-on-error: #490006;
+  --color-on-surface-variant: #aaaab7;
+  --color-tertiary-container: #a38efc;
+  --color-error-dim: #d7383b;
+  --color-on-primary-fixed: #000000;
+  --color-error: #ff716c;
+  --color-secondary-fixed: #d8caff;
+  --color-surface-bright: #282b3a;
+  --color-surface: #0c0e17;
+  --color-secondary-dim: #7e51ff;
+  --color-tertiary-fixed-dim: #a894ff;
+  --color-on-surface: #f0f0fd;
+  --color-inverse-on-surface: #53545f;
+  --color-outline-variant: #464752;
+  --color-on-secondary: #25006b;
+  --color-surface-dim: #0c0e17;
+  --color-surface-variant: #222532;
+  --color-inverse-surface: #faf8ff;
+  --color-surface-tint: #ff88b5;
+  --color-primary-fixed: #ff6eaa;
+  --color-primary: #ff88b5;
+  --color-on-primary-fixed-variant: #5c0031;
+  --color-tertiary-fixed: #b5a4ff;
+  --color-surface-container-low: #11131d;
+  --color-inverse-primary: #ba0069;
+  --color-on-tertiary-container: #22006d;
+  --color-surface-container: #171924;
+  --color-surface-container-lowest: #000000;
+  --color-outline: #737580;
+  --color-on-tertiary-fixed: #190057;
+  --color-background: #0c0e17;
+  --color-surface-container-highest: #222532;
+  --color-on-tertiary-fixed-variant: #3c238e;
+  --color-primary-fixed-dim: #ff4e9f;
+  --color-surface-container-high: #1c1f2b;
+  --color-primary-dim: #e10181;
+  --color-on-error-container: #ffa8a3;
+  --color-on-primary-container: #4b0027;
+  --color-on-primary: #610034;
+  --color-on-secondary-fixed-variant: #591bdc;
+  --color-on-background: #f0f0fd;
+  --color-tertiary-dim: #a38efc;
+  --color-on-secondary-fixed: #3b00a0;
+  --color-error-container: #9f0519;
+  --color-secondary-container: #591adc;
+  --color-secondary: #a68cff;
+  --color-secondary-fixed-dim: #cabaff;
+  --color-primary-container: #ff6eaa;
+  --color-on-tertiary: #2e0f81;
+  --color-on-secondary-container: #e4daff;
+  --color-tertiary: #b09eff;
+  --color-neon-green: #92ff75;
+
+  /* border */
+  --radius: 1rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+  --radius-full: 9999px;
+
+  /* fontFamily */
+  --font-ProFontWindows: 'ProFontWindows';
+  --font-GOODBYE-DESPAIR: 'GOODBYEDESPAIR';
+  --font-SF-Pro-Regular: 'SFProDisplayRegular';
+}
+
+@font-face {
+  font-family: 'ProFontWindows';
+  src: url('src/assets/fonts/ProFontWindows.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'GOODBYEDESPAIR';
+  src: url('src/assets/fonts/GOODBYEDESPAIR.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'SFProDisplayRegular';
+  src: url('src/assets/fonts/SFPRODISPLAYREGULAR.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  src: url("src/assets/fonts/MaterialSymbolsOutlined.woff2") format('woff2');
+}
+
+body {
+  font-family: 'ProFontWindows', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.glass-panel {
+  background: rgba(34, 37, 50, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.bg-neon-gradient {
+  background: linear-gradient(135deg, #ff88b5 0%, #ff6eaa 100%);
+}
+.bg-secondary-neon-gradient {
+  background: linear-gradient(135deg, #5233a7 0%, #7e62ce 100%);
+}
+
+.scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.card-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: perspective(800px);
+  animation: autoRun3d 20s linear infinite;
+  will-change: transform;
+}
+
+.card-3d div img {
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(0.5rem - 2px);
+}
+
+
+.card-3d div {
+  position: absolute;
+  width: clamp(10rem, 30%, 16rem);
+  aspect-ratio: 5 / 3;
+  background-color: var(--color-surface);
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  top: 50%;
+  left: 50%;
+}
+
+.card-3d div:nth-child(1) {
+  transform: translate(-50%, -50%) rotateY(0deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -0s;
+}
+
+.card-3d div:nth-child(2) {
+  transform: translate(-50%, -50%) rotateY(60deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -2s;
+}
+
+.card-3d div:nth-child(3) {
+  transform: translate(-50%, -50%) rotateY(120deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -4s;
+}
+
+.card-3d div:nth-child(4) {
+  transform: translate(-50%, -50%) rotateY(180deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -6s;
+}
+
+.card-3d div:nth-child(5) {
+  transform: translate(-50%, -50%) rotateY(240deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -8s;
+}
+
+.card-3d div:nth-child(6) {
+  transform: translate(-50%, -50%) rotateY(300deg)
+    translateZ(clamp(165px, 27.5vw, 250px));
+  animation-delay: -10s;
+}
+
+@keyframes autoRun3d {
+  from {
+    transform: perspective(800px) rotateX(15deg) rotateY(-360deg);
+  }
+  to {
+    transform: perspective(800px) rotateX(15deg) rotateY(0deg);
+  }
+}
+
+.input-color .react-colorful {
+  width: 100%;
+  height: 100%;
+}
