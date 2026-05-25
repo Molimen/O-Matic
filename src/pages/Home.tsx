@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { waapi, stagger, splitText, spring } from 'animejs'
 import { NavLink } from 'react-router'
 
-function animateChars(chars: string[]) {
+function animateChars(chars: HTMLElement[]) {
   const total = chars.length
   const third = Math.floor(total / 3)
 
@@ -40,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     if (!ref.current) return
 
-    const { chars } = splitText(ref.current, {
+    const { chars }: { chars: HTMLElement[] } = splitText(ref.current, {
       words: true,
       chars: true,
       accessible: false,
@@ -48,15 +48,19 @@ export default function Home() {
 
     // this only for chromium bug...
     chars.map((el) => {
-      if (0 <= el.dataset.char && el.dataset.char <= 7) {
+      if (typeof el.dataset.char === "undefined") return;
+
+      if (0 <= Number(el.dataset.char) && Number(el.dataset.char) <= 7) {
         el.classList.add("text-transparent" , "bg-clip-text", "bg-gradient-to-b" , "from-primary","from-30%" , "via-secondary" , "to-tertiary");
       }
     });
 
-    const animations = animateChars(chars)
+    const animations = animateChars(chars);
 
     return () => {
-      animations.forEach((a) => a?.cancel())
+      animations.forEach((a) => {
+        a?.cancel();
+      });
     }
   }, []);
 
