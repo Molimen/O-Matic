@@ -12,7 +12,7 @@ export default async function getBlacklistsData(cls: number) {
   }
 
   try {
-    const response = await fetch(`http://localhost:8787/?type=blacklistsPartnerNew&index=${cls}`);
+    const response = await fetch(`http://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNew&index=${cls}`);
     if (!response.ok) throw new Error("Failed to fetch student data");
 
     const rawdata = await response.json() as blacklistsType;

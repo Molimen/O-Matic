@@ -81,22 +81,22 @@ export default function Home() {
         <div className="w-[clamp(300px,90vw,60rem)] h-[clamp(10rem,35vw,20rem)] mt-2 mx-auto -mb-16 sm:-mb-24 aspect-video">
           <div className="card-3d">
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
-              <img src="src/assets/images/background.png" alt=""></img>
+              <img src="/images/background.png" alt=""></img>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function Home() {
                 <img
                   alt="Image of a Kel-O-Matic"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="src/assets/images/kel-o-matic-image.jpg"
+                  src="/images/kel-o-matic-image.jpg"
                 />
               </NavLink>
             </div>
@@ -172,7 +172,7 @@ export default function Home() {
                 <img
                   alt="Image of a Seat-O-Matic"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  src="src/assets/images/seat-o-matic-image.jpg"
+                  src="/images/seat-o-matic-image.jpg"
                 />
               </NavLink>
             </div>

@@ -81,7 +81,7 @@ export default function App() {
           </div>
 
           <p className="text-on-surface-variant">
-            <a href="https://github.com/Molimen/O_Matic" rel="noopener">
+            <a href="https://github.com/Molimen/O-Matic" rel="noopener">
               Source Code
             </a>{' '}
             • 2.1.0
