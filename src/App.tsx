@@ -1,11 +1,12 @@
-import { Routes, Route, NavLink, useLocation } from 'react-router'
+import { useRef, useState, useEffect } from 'react'
+import { Routes, Route, NavLink, Navigate, useLocation } from 'react-router'
 import Home from './pages/Home.tsx'
 import Kel from './pages/Kel-o-matic.tsx'
 import Seat from './pages/Seat-o-matic.tsx'
 import About from './pages/About.tsx'
 import Petto from './pages/Petto.tsx'
 import AlterEgo from './pages/AlterEgo.tsx'
-import { useRef, useState, useEffect } from 'react'
+import NotFound from './pages/NotFound.tsx'
 
 export default function App() {
 
@@ -214,6 +215,9 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path='/petto' element={<Petto />} />
           <Route path='/alter-ego' element={<AlterEgo />} />
+
+          <Route path='/not-found' element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </main>
 
