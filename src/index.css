@@ -147,6 +147,7 @@ body {
 
 .card-3d div img {
   height: 100%;
+  width: 100%;
   object-fit: cover;
   border-radius: calc(0.5rem - 2px);
 }
@@ -211,4 +212,100 @@ body {
 .input-color .react-colorful {
   width: 100%;
   height: 100%;
+}
+
+.scrolldown-arrow-indicator {
+  animation: up-n-down 1s ease-in-out infinite;
+}
+
+.anim-text {
+position: absolute;
+color: var(--yellow);
+opacity: 0;
+font-size: clamp(2.2rem, 5vw, 4.5rem);
+text-wrap: balance;
+width: 98%;
+font-weight: bold;
+text-align: center;
+bottom: 8%;
+left: 50%;
+transform: translateX(-50%);
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+color: #B29CFE;
+position: fixed;
+bottom: 0;
+left: 0;
+height: 5px;
+width: 0%;
+background: currentColor;
+z-index: 100;
+opacity: 0;
+transition: opacity 0.3s;
+box-shadow: 0 0 10px 2px currentColor;
+}
+
+/* ── ANIMATION STAGE ── */
+.scroll-space {
+  height: 200vh;
+  position: relative;
+  background-color: rgb(12, 14, 23);
+}
+
+.scroll-stage {
+isolation: isolate;
+position: absolute;
+-webkit-transform: translateZ(0);
+transform: translateZ(0);
+top: 0;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+/* background-color: #232324; */
+overflow: hidden;
+}
+
+.scroll-stage * {
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+}
+
+.box {
+color: #7C4DFF;
+position: absolute;
+width: 80px;
+height: 80px;
+background: currentColor;
+border-radius: 3px;
+transform: translateY(110vh);
+z-index: 1;
+box-shadow: inset 0 0 10px 2px oklch(from currentColor calc(l - 0.3) c h);
+}
+
+.under-cover {
+color: white;
+text-align: center;
+justify-content: center;
+display: flex;
+align-items: center;
+width: clamp(280px, 50%, 700px);
+height: 300px;
+z-index: -1;
+}
+
+.cover {
+background-color: rgb(12, 14, 23);
+position: absolute;
+width: 98vw;
+height: 300px;
+z-index: 0;
+}
+
+@keyframes up-n-down {
+  50% {
+      transform: translateY(25%);
+  }
 }
