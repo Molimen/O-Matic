@@ -1,4 +1,9 @@
 @import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   /* color */
@@ -151,7 +156,6 @@ body {
   object-fit: cover;
   border-radius: calc(0.5rem - 2px);
 }
-
 
 .card-3d div {
   position: absolute;
@@ -308,4 +312,138 @@ z-index: 0;
   50% {
       transform: translateY(25%);
   }
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: 'Geist Variable', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+:root {
+  /* Background & Surface */
+  --background: #0c0e17;
+  --foreground: #f0f0fd;
+
+  /* Card */
+  --card: #171924;
+  --card-foreground: #f0f0fd;
+
+  /* Popover */
+  --popover: #1c1f2b;
+  --popover-foreground: #f0f0fd;
+
+  /* Primary */
+  --primary: #ff88b5;
+  --primary-foreground: #610034;
+
+  /* Secondary */
+  --secondary: #a68cff;
+  --secondary-foreground: #25006b;
+
+  /* Muted */
+  --muted: #222532;
+  --muted-foreground: #aaaab7;
+
+  /* Accent */
+  --accent: #282b3a;
+  --accent-foreground: #f0f0fd;
+
+  /* Destructive */
+  --destructive: #ff716c;
+
+  /* Border, Input, Ring */
+  --border: #464752;
+  --input: #222532;
+  --ring: #ff88b5;
+
+  /* Radius */
+  --radius: 1rem;
+
+  /* Sidebar */
+  --sidebar: #11131d;
+  --sidebar-foreground: #f0f0fd;
+  --sidebar-primary: #ff88b5;
+  --sidebar-primary-foreground: #610034;
+  --sidebar-accent: #1c1f2b;
+  --sidebar-accent-foreground: #f0f0fd;
+  --sidebar-border: #464752;
+  --sidebar-ring: #ff88b5;
+}
+
+/* Hapus .dark override dari shadcn — app-mu sudah dark by default */
+.dark {
+  --background: #0c0e17;
+  --foreground: #f0f0fd;
+  --card: #171924;
+  --card-foreground: #f0f0fd;
+  --popover: #1c1f2b;
+  --popover-foreground: #f0f0fd;
+  --primary: #ff88b5;
+  --primary-foreground: #610034;
+  --secondary: #a68cff;
+  --secondary-foreground: #25006b;
+  --muted: #222532;
+  --muted-foreground: #aaaab7;
+  --accent: #282b3a;
+  --accent-foreground: #f0f0fd;
+  --destructive: #ff716c;
+  --border: #464752;
+  --input: #222532;
+  --ring: #ff88b5;
+  --sidebar: #11131d;
+  --sidebar-foreground: #f0f0fd;
+  --sidebar-primary: #ff88b5;
+  --sidebar-primary-foreground: #610034;
+  --sidebar-accent: #1c1f2b;
+  --sidebar-accent-foreground: #f0f0fd;
+  --sidebar-border: #464752;
+  --sidebar-ring: #ff88b5;
 }

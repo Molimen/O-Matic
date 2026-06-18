@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { waapi, stagger, splitText, spring, animate, createTimeline, onScroll, scrambleText } from 'animejs'
 import { NavLink } from 'react-router'
+import FloatingLines from '../../@/components/FloatingLines';
 
 function animateChars(chars: HTMLElement[]) {
   const total = chars.length
@@ -281,11 +282,27 @@ export default function Home() {
 
   return (
     <>
+      <div style={{ width: '100%', height: '600px', position: 'absolute', maskImage:'linear-gradient(transparent 5%,black 30%, black 70%,transparent 95%)'}}>
+        <FloatingLines 
+          enabledWaves={["middle","bottom","top"]}
+          // Array - specify line count per wave; Number - same count for all waves
+          lineCount={6}
+          // Array - specify line distance per wave; Number - same distance for all waves
+          lineDistance={25}
+          bendRadius={8}
+          bendStrength={-2}
+          interactive
+          parallax={true}
+          animationSpeed={1}
+          linesGradient={['79e1ff', 'ffab91', '003fa5']}
+          />
+      </div>
+
       {/* <div className="absolute top-[55%] left-[-10%] w-[40%] h-[40%] bg-primary-dim/10 rounded-full blur-[120px]"></div>
       <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-secondary-dim/10 rounded-full blur-[100px]"></div> */}
-      <img src="/images/bgdecor.png" alt="background-decor" className="block opacity-25 absolute scale-[1.25] -z-50 top-[28%] left-[11.5%] -translate-y-1/2" /> 
+      <img src="/images/bgdecor.png" alt="background-decor" className="block opacity-25 absolute scale-[1.25] -z-50 top-[35%] left-[11.5%] -translate-y-1/2" /> 
 
-      <div className="mx-auto w-screen relative text-center mt-12">
+      <div className="mx-auto w-screen relative text-center mt-12 pointer-events-none">
         <div className="w-[clamp(300px,90vw,60rem)] h-[clamp(10rem,35vw,20rem)] mt-2 mx-auto -mb-16 sm:-mb-24 aspect-video">
           <div className="card-3d">
             <div className="shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]"
@@ -374,7 +391,7 @@ export default function Home() {
 
         <button
           onClick={goToFeaturedItem}
-          className="mx-auto px-8 py-4 rounded-full bg-linear-to-r from-primary to-primary-container text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_30px_rgba(255,136,181,0.4)] transition-all active:scale-95 group flex items-center gap-2"
+          className="mx-auto px-8 py-4 rounded-full bg-linear-to-r from-primary to-primary-container text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_30px_rgba(255,136,181,0.4)] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto"
         >
           Get Started
           <span
