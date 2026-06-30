@@ -12,6 +12,7 @@ import {
 } from 'three';
 
 import './FloatingLines.css';
+import { useAdaptiveQuality } from './useAdaptiveQuality';
 
 const vertexShader = `
 precision highp float;
@@ -300,6 +301,18 @@ export default function FloatingLines({
   const middleLineDistance = enabledWaves.includes('middle') ? getLineDistance('middle') * 0.01 : 0.01;
   const bottomLineDistance = enabledWaves.includes('bottom') ? getLineDistance('bottom') * 0.01 : 0.01;
 
+  const { config, tick } = useAdaptiveQuality();
+
+  // Scale lineCount berdasarkan kualitas
+  const scaledTopCount    = Math.max(1, Math.round(topLineCount    * config.lineCountMultiplier));
+  const scaledMiddleCount = Math.max(1, Math.round(middleLineCount * config.lineCountMultiplier));
+  const scaledBottomCount = Math.max(1, Math.round(bottomLineCount * config.lineCountMultiplier));
+
+  // Override props dengan nilai dari config
+  const effectiveParallax     = parallax     && config.parallax;
+  const effectiveInteractive  = interactive  && config.interactive;
+  const effectiveAnimSpeed    = animationSpeed * config.animationSpeed;
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -312,7 +325,7 @@ export default function FloatingLines({
     camera.position.z = 1;
 
     const renderer = new WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2) * config.pixelRatio);
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     container.appendChild(renderer.domElement);
@@ -320,15 +333,15 @@ export default function FloatingLines({
     const uniforms = {
       iTime: { value: 0 },
       iResolution: { value: new Vector3(1, 1, 1) },
-      animationSpeed: { value: animationSpeed },
+      animationSpeed: { value: effectiveAnimSpeed },
 
       enableTop: { value: enabledWaves.includes('top') },
       enableMiddle: { value: enabledWaves.includes('middle') },
       enableBottom: { value: enabledWaves.includes('bottom') },
 
-      topLineCount: { value: topLineCount },
-      middleLineCount: { value: middleLineCount },
-      bottomLineCount: { value: bottomLineCount },
+      topLineCount: { value: scaledTopCount },
+      middleLineCount: { value: scaledMiddleCount },
+      bottomLineCount: { value: scaledBottomCount },
 
       topLineDistance: { value: topLineDistance },
       middleLineDistance: { value: middleLineDistance },
@@ -353,12 +366,12 @@ export default function FloatingLines({
       },
 
       iMouse: { value: new Vector2(-1000, -1000) },
-      interactive: { value: interactive },
+      interactive: { value: effectiveInteractive },
       bendRadius: { value: bendRadius },
       bendStrength: { value: bendStrength },
       bendInfluence: { value: 0 },
 
-      parallax: { value: parallax },
+      parallax: { value: effectiveParallax },
       parallaxStrength: { value: parallaxStrength },
       parallaxOffset: { value: new Vector2(0, 0) },
 
@@ -444,23 +457,27 @@ export default function FloatingLines({
     let raf = 0;
     const renderLoop = () => {
       if (!active) return;
-
-      uniforms.iTime.value = clock.getElapsedTime();
-
-      if (interactive) {
-        currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
-        uniforms.iMouse.value.copy(currentMouseRef.current);
-
-        currentInfluenceRef.current += (targetInfluenceRef.current - currentInfluenceRef.current) * mouseDamping;
-        uniforms.bendInfluence.value = currentInfluenceRef.current;
+    
+      const shouldRender = tick();
+    
+      if (shouldRender) {
+        uniforms.iTime.value = clock.getElapsedTime();
+    
+        if (effectiveInteractive) {
+          currentMouseRef.current.lerp(targetMouseRef.current, mouseDamping);
+          uniforms.iMouse.value.copy(currentMouseRef.current);
+          currentInfluenceRef.current += (targetInfluenceRef.current - currentInfluenceRef.current) * mouseDamping;
+          uniforms.bendInfluence.value = currentInfluenceRef.current;
+        }
+    
+        if (effectiveParallax) {
+          currentParallaxRef.current.lerp(targetParallaxRef.current, mouseDamping);
+          uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
+        }
+    
+        renderer.render(scene, camera);
       }
-
-      if (parallax) {
-        currentParallaxRef.current.lerp(targetParallaxRef.current, mouseDamping);
-        uniforms.parallaxOffset.value.copy(currentParallaxRef.current);
-      }
-
-      renderer.render(scene, camera);
+    
       raf = requestAnimationFrame(renderLoop);
     };
     renderLoop();
@@ -499,7 +516,8 @@ export default function FloatingLines({
     bendStrength,
     mouseDamping,
     parallax,
-    parallaxStrength
+    parallaxStrength,
+    config,
   ]);
 
   return (
