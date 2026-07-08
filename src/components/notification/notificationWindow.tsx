@@ -1,9 +1,9 @@
 export default function NotificationWindow({
-  message, hiddenState, onExit
+  hiddenState, onExit, children
 } : {
-  message: React.ReactNode;
   hiddenState: boolean;
   onExit: () => void;
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -20,7 +20,7 @@ export default function NotificationWindow({
           </button>
 
           <div className="flex flex-col relative z-10 pl-2 pr-6">
-            {message}
+            {children}
           </div>
         </div>
       </div>

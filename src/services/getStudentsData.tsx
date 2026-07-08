@@ -22,7 +22,8 @@ export default async function getStudentsData(cls: number) {
 
   try {
     // const response = await fetch('https://o-matic-person.molimen.workers.dev/?type=students');
-    const response = await fetch(`http://o-matic-person.molimen.workers.dev/?type=studentsNew&index=${cls}`);
+    const response = await fetch(`http://o-matic-person.molimen.workers.dev/?type=studentsNewSquared&index=${cls}`);
+    // const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=studentsNew&index=${cls}`);
     if (!response.ok) throw new Error("Failed to fetch student data");
 
     const rawdata = await response.json() as studentsType;

@@ -16,11 +16,11 @@ export default function InputNumber({
   return (
     <>
       <div className="relative flex flex-col gap-2">
-        <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+        <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
           {name}
-        </label>
+        </span>
 
-        <div className="flex items-center w-full bg-surface-container-highest border-0 rounded-full px-5 gap-2">
+        <div className="flex items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-[1.75rem] px-5 max-h-15 gap-2 hover:ring-2 hover:ring-primary/50 transition-all">
           <button 
             className="text-on-surface-variant hover:text-on-surface transition text-xl font-bold material-symbols-outlined cursor-pointer"
             onClick={() => onChange(undefined, "minus")}

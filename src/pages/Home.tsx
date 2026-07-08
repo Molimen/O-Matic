@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { waapi, stagger, splitText, spring, createTimeline, createScope, Timeline, animate, onScroll, JSAnimation, scrambleText } from 'animejs';
 import LightRays from '../../@/components/LightRays';
 import Strands from '../../@/components/Strands';
 import { ReactLenis } from 'lenis/react';
+
+// i give up reading this code...
 
 function animateChars(chars: HTMLElement[]) {
   const baseConfig = {

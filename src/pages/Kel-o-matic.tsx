@@ -10,6 +10,7 @@ import NotificationWindow from '../components/notification/notificationWindow';
 import InputSelect from '../components/user-input/InputSelect';
 import InputNumber from '../components/user-input/InputNumber';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
+import CLASSNUMBER from '../utils/classNumber';
 
 export default function Kel() {
   const GENERATIONTYPEDATA = [
@@ -38,7 +39,7 @@ export default function Kel() {
 
   const [notificationState, setNotificationState] = useState(true);
 
-  function setMessageBoard(message: string, messageType: messageTypeCheck = "info") {
+  const setMessageBoard = (message: string, messageType: messageTypeCheck = "info") => {
     setMessage(message);
     setMessageType(messageType);
   }
@@ -129,6 +130,8 @@ export default function Kel() {
       else if (student.gender === "L") studentsBoys.push(student);
     }
     
+    console.log(`Boy: ${structuredClone(studentsBoys.length)}, Girl: ${structuredClone(studentsGirls.length)}`);
+
     studentsGirls = shuffleArray(studentsGirls);
     studentsBoys = shuffleArray(studentsBoys);
 
@@ -303,37 +306,34 @@ export default function Kel() {
   return (
     <>
       <NotificationWindow
-        message={(
-        <>
-          <div className="mb-8 flex justify-between items-center min-h-auto">
-            <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Input explanation</div>
-          </div>
-          
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Generation type</div>
-          <div className="tracking-wide">Controls result format — <b><i>Student Absent</i></b> shows numbers, <b><i>Student Name</i></b> shows short names.</div>
-          <div className="h-4"></div>
-
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Type search</div>
-          <div className="tracking-wide">Choose <b><i>Group</i></b> to set number of groups, or <b><i>Member</i></b> to set students per group.</div>
-          <div className="h-4"></div>
-
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">How much</div>
-          <div className="tracking-wide">The 'n' for Type Search. For example, <mark style={{backgroundColor: "#743665", color: "white"}}><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark style={{backgroundColor: "#743665", color: "white"}}><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
-          <div className="h-4"></div>
-
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Smart finder</div>
-          <div className="tracking-wide">Currently unavailable. because the dev is not in the mood to add this feature {"</3"}. this is a intensive feature and chalange dev moral to add this.</div>
-        </>
-      )}
         hiddenState={notificationState}
         onExit={() => setNotificationState(true)}
-      />
+      >
+        <div className="mb-8 flex justify-between items-center min-h-auto">
+          <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Input explanation</div>
+        </div>
+        
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Generation type</div>
+        <div className="tracking-wide">Controls result format — <b><i>Student Absent</i></b> shows numbers, <b><i>Student Name</i></b> shows short names.</div>
+        <div className="h-4"></div>
+
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Type search</div>
+        <div className="tracking-wide">Choose <b><i>Group</i></b> to set number of groups, or <b><i>Member</i></b> to set students per group.</div>
+        <div className="h-4"></div>
+
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">How much</div>
+        <div className="tracking-wide">The 'n' for Type Search. For example, <mark style={{backgroundColor: "#743665", color: "white"}}><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark style={{backgroundColor: "#743665", color: "white"}}><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
+        <div className="h-4"></div>
+
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Smart finder</div>
+        <div className="tracking-wide">Currently unavailable. because the dev is not in the mood to add this feature {"</3"}. this is a intensive feature and chalange dev moral to add this.</div>
+      </NotificationWindow>
 
       <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-dim/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-40 -right-20 w-125 h-125 bg-secondary-dim/5 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-6 z-0 relative">
-        <div className="glass-panel rounded-lg p-8 space-y-6">
+        <div className="glass-panel rounded-lg p-8 space-y-6 border border-surface-container-highest">
           <div className="absolute right-0 pr-8 top-0 pt-6">
             <button
               className="text-on-surface-variant text-lg hover:text-on-surface flex justify-end items-center gap-3 rounded-full glass-panel py-2 pr-2 pl-3 max-w-11 hover:max-w-xl truncate transition-all cursor-pointer"
@@ -353,7 +353,7 @@ export default function Kel() {
             <InputSelect
               name="Class"
               dataset={CLASSDATA}
-              value={classSelected}
+              value={`${CLASSNUMBER}-${classSelected}`}
               onChange={(e) => {setClassSelected(e); setDisplayGroups(undefined); setMessageBoard("Nothing to Do")}}
             />
 
@@ -398,7 +398,7 @@ export default function Kel() {
             />
 
             <div className="relative flex flex-col gap-2">
-              <div className="flex items-center justify-between w-full bg-surface-container-low border-0 rounded-full px-6 h-15 md:mt-8 gap-2">
+              <div className="flex items-center justify-between w-full bg-surface-container-low border border-surface-container rounded-full px-6 h-15 md:mt-8 gap-2">
                 <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
                   Smart Finder
                 </label>
@@ -434,27 +434,25 @@ export default function Kel() {
       </div>
 
       <div className="max-w-4xl mx-auto mt-12 px-6">
-        <div ref={captureGroupsRef} className={`p-6 relative glass-panel rounded-lg border border-outline-variant/10 ${typeof displayGroup === 'undefined' ? "hidden" : ""}`}>
-          <div className="flex items-center bg-surface-container-highest rounded-full px-6 mb-6">
+        <div ref={captureGroupsRef} className={`p-6 relative glass-panel rounded-lg border border-surface-container-highest ${typeof displayGroup === 'undefined' ? "hidden" : ""}`}>
+          <div className="flex items-center bg-surface-container-highest border border-surface-container-highestest rounded-full px-6 mb-6">
             <input
-              className="w-full bg-transparent border-0 py-4 text-on-surface focus:ring-0 font-medium text-3xl text-center"
-              style={{ fontFamily: 'SFProDisplayRegular' }}
+              className="w-full bg-transparent border-0 py-4 text-on-surface focus:ring-0 font-medium text-3xl text-center font-SF-Pro-Regular"
               type="text"
-              placeholder={totalItem === "16" ? "glorified Seats" : 'Group Name'}
+              placeholder={totalItem === "2" ? "glorified Seats" : 'Group Name'}
             />
           </div>
 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(90px,100%),1fr))] gap-6">
             {displayGroup?.map((group) => (
               <div 
-                key={["Group", displayGroup.indexOf(group)+1].toString()}
-                className='p-2 pb-4 glass-panel rounded-4xl border border-outline-variant/10 flex flex-col items-center'
+                className='p-2 pb-4 glass-panel rounded-4xl border border-surface-container-highestest flex flex-col items-center'
               >
-                <span className='text-xl flex text-center leading-5 mt-1'>Group {displayGroup.indexOf(group)+1}</span>
+                <span className='text-xl flex text-center leading-5 mt-1'>Group<br />{displayGroup.indexOf(group)+1}</span>
                 <div className='bg-white h-0.75 w-[80%] mb-1 mt-1'></div>
                 <div className='flex flex-col items-center'>
                   {group.map((student) => (
-                    <span key={student.absent} className={student.gender === "P" ? "text-pink-500" : "text-blue-500"}>{generationType === "absent" ? student.absent : student.name}</span>
+                    <span className={student.gender === "P" ? "text-pink-500" : "text-blue-500"}>{generationType === "absent" ? student.absent : student.name}</span>
                   ))}
                 </div>
               </div>

@@ -61,6 +61,7 @@
 
   --color-surface-container-highest: #17212b;
 
+  --color-surface-container-highestest: #303340;
   --color-on-tertiary-fixed-variant: #005572;
 
   --color-primary-fixed-dim: #8ddff8;
@@ -111,9 +112,19 @@
   --font-ProFontWindows: 'ProFontWindows';
   --font-GOODBYE-DESPAIR: 'GOODBYEDESPAIR';
   --font-SF-Pro-Regular: 'SFProDisplayRegular';
+  --animate-marquee: marquee 10s ease-in-out infinite alternate;
 
   /* breakpoint */
   --breakpoint-xsm: 480px;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(20%);
+  }
+  to {
+    transform: translateX(-80%);
+  }
 }
 
 @font-face {
@@ -268,7 +279,6 @@ z-index: 0;
       transform: translateY(25%);
   }
 }
-
 img {
   image-rendering: auto;
   transform-origin: center;

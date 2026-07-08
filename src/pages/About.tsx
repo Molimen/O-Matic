@@ -9,6 +9,7 @@ export default function About() {
   const links = [
     { to: '/petto', label: 'Petto', icon: 'pet' },
     { to: '/alter-ego', label: 'Alter Ego', icon: 'network_intel_node' },
+    {to: '/chess', label: 'Chess', icon: 'chess_pawn'},
   ];
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -29,39 +30,36 @@ export default function About() {
   return (
     <>
       <NotificationWindow 
-        message={(
-          <>
-          <div className="mb-8 flex justify-between items-center min-h-auto">
-            <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Up Comming</div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            {links.map((link) => (
-              <>
-                <div>
-                  <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">{link.label}</div>
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                  >
-                    Click here to see!
-                  </NavLink>
-                </div>
-              </>
-            ))}
-          </div>
-          </>
-        )}
         hiddenState={notificationState}
         onExit={() => setNotificationState(true)}
-      />
+      >
+        <div className="mb-8 flex justify-between items-center min-h-auto">
+          <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Up Comming</div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {links.map((link) => (
+            <>
+              <div>
+                <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">{link.label}</div>
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                >
+                  Click here to see!
+                </NavLink>
+              </div>
+            </>
+          ))}
+        </div>
+      </NotificationWindow>
 
       <div className="absolute top-0 -left-20 w-96 h-96 bg-primary-dim/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-40 -right-20 w-125 h-125 bg-secondary-dim/5 rounded-full blur-[150px] pointer-events-none"></div>
 
       <section className="text-center">
-  <div className="h-[250px] w-[500px] mx-auto mb-8 flex justify-center items-center z-0">
-        <svg ref={svgRef} width="510" height="393" viewBox="0 0 510 393" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute h-[250px] h-[100%] z-20">
+  <div className="h-62.5 w-62.5 mx-auto mb-8 flex justify-center items-center z-0">
+        <svg ref={svgRef} width="510" height="393" viewBox="0 0 510 393" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute h-62.5 z-20">
             <g id="Group 11">
             <rect id="Rectangle 15" x="5" y="338" width="500" height="50" rx="9" stroke="#7A00CB" stroke-width="10"/>
             <path id="Rectangle 16" d="M33 50C33 25.1472 53.1472 5 78 5H432C456.853 5 477 25.1472 477 50V310H33V50Z" stroke="#BB00EA" stroke-width="10"/>
@@ -79,7 +77,7 @@ export default function About() {
             </g>
         </svg>
     
-        <svg width="510" height="393" viewBox="0 0 510 393" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute h-[250px] z-10">
+        <svg width="510" height="393" viewBox="0 0 510 393" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute h-62.5 z-10">
             <g id="Group 11">
             <rect id="Rectangle 15" x="5" y="338" width="500" height="50" rx="9" stroke="#364153" stroke-width="10"/>
             <path id="Rectangle 16" d="M33 50C33 25.1472 53.1472 5 78 5H432C456.853 5 477 25.1472 477 50V310H33V50Z" stroke="#364153" stroke-width="10"/>
@@ -110,7 +108,7 @@ export default function About() {
       {/* Team Bento Grid */}
       <section className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-6 mt-12">
         {/* Profile Card: Molimen */}
-        <div className="glass-panel rounded-lg p-8 md:p-12 relative overflow-hidden group border border-outline-variant/10">
+        <div className="glass-panel rounded-lg p-8 md:p-12 relative overflow-hidden group border border-surface-container-highestest">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-colors"></div>
 
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-8">
@@ -167,7 +165,7 @@ export default function About() {
         </div>
 
         {/* Profile Card: Ceplox21 */}
-        <div className="glass-panel rounded-lg p-8 md:p-12 relative overflow-hidden group border border-outline-variant/10">
+        <div className="glass-panel rounded-lg p-8 md:p-12 relative overflow-hidden group border border-surface-container-highestest">
           <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-secondary/20 transition-colors"></div>
 
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-8">

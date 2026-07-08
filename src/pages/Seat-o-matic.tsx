@@ -9,14 +9,37 @@ import getStudentsData, { type studentsType, type studentType } from '../service
 import shuffleArray from '../utils/shuffleArray';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
 import { snapdom } from "@zumer/snapdom";
+import CLASSNUMBER from '../utils/classNumber';
 
-function SeatRowElement({ left, girlColor, boyColor, studentsSeats }: { left: string, girlColor: string, boyColor: string, studentsSeats: studentsType[] | undefined }) {
+function SeatColElement({ left, girlColor, boyColor, studentsSeats }: { left: string, girlColor: string, boyColor: string, studentsSeats: studentsType[] | undefined }) {
   const girlTextColor = hexToBrightness(girlColor) > 0.179 ? 'black' : 'white';
   const boyTextColor = hexToBrightness(boyColor) > 0.179 ? 'black' : 'white';
 
   const seats = [];
 
   for (let i = 0; i < 4; i++) {
+    if (typeof studentsSeats !== 'undefined' && typeof studentsSeats[i] === 'undefined') {
+      seats.push(
+        <div key={`${left} ${i}`}>
+          <div
+            key={`${i} seat 1`}
+            className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "left-[50.7%]" : ""}`}
+            style={{ fontSize: '6.1cqw', backgroundColor: `#${boyColor}`, color: `${boyTextColor}`, top: `${25*i}%` }}
+          >
+            ??
+          </div>
+          <div
+            key={`${i} seat 2`}
+            className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "" : "left-[50.7%]"}`}
+            style={{ fontSize: '6.1cqw', backgroundColor: `#${girlColor}`, color: `${girlTextColor}`, top: `${25*i}%` }}
+          >
+            ??
+          </div>
+        </div>
+      );
+      continue;
+    }
+
     seats.push(
       <div key={`${left} ${i}`}>
         <div
@@ -24,14 +47,14 @@ function SeatRowElement({ left, girlColor, boyColor, studentsSeats }: { left: st
           className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "left-[50.7%]" : ""}`}
           style={{ fontSize: '6.1cqw', backgroundColor: `#${typeof studentsSeats !== "undefined" ? studentsSeats[i][0].gender === "P" ? girlColor : boyColor : boyColor}`, color: `${typeof studentsSeats !== "undefined" ? studentsSeats[i][0].gender === "P" ? girlTextColor : boyTextColor : boyTextColor}`, top: `${25*i}%` }}
         >
-          {typeof studentsSeats !== "undefined" ? studentsSeats[i][0].absent : "??"}
+          {typeof studentsSeats !== "undefined" && studentsSeats[i][0].absent !== -1 ? studentsSeats[i][0].absent : "??"}
         </div>
         <div
           key={`${i} seat 2`}
           className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "" : "left-[50.7%]"}`}
           style={{ fontSize: '6.1cqw', backgroundColor: `#${typeof studentsSeats !== "undefined" ? studentsSeats[i][1].gender === "P" ? girlColor : boyColor : girlColor}`, color: `${typeof studentsSeats !== "undefined" ? studentsSeats[i][1].gender === "P" ? girlTextColor : boyTextColor : girlTextColor}`, top: `${25*i}%` }}
         >
-          {typeof studentsSeats !== "undefined" ? studentsSeats[i][1].absent : "??"}
+          {typeof studentsSeats !== "undefined" && studentsSeats[i][1].absent !== -1 ? studentsSeats[i][1].absent : "??"}
         </div>
       </div>
     );
@@ -50,6 +73,100 @@ function SeatRowElement({ left, girlColor, boyColor, studentsSeats }: { left: st
   )
 }
 
+function SeatRowGenerator11037({
+  studentsSeats,
+  girlColor,
+  boyColor
+}: {
+  studentsSeats: studentsType[] | undefined;
+  girlColor: string;
+  boyColor: string;
+}) {
+  const seats = [];
+
+  const getColor = (counter: number, num: number, i: number) => {
+    if (typeof studentsSeats !== 'undefined') {
+      if (typeof studentsSeats[counter] !== 'undefined') {
+        if (typeof studentsSeats[counter][num] !== 'undefined') {
+          if (studentsSeats[counter][num].gender === "P") {
+            return girlColor
+          } else if (studentsSeats[counter][num].gender === "L") {
+            return boyColor
+          }
+        }
+      }
+    }
+
+    if (num === 0) {
+      if (i % 2 === 0) {
+        return girlColor
+      } else {
+        return boyColor
+      }
+    } else if (num === 1) {
+      if (i % 2 !== 0) {
+        return girlColor
+      } else {
+        return boyColor
+      }
+    }
+
+    return "FFFFFF"
+  };
+
+  const getNameOrAbsent = (counter: number, num: number, type: "name" | "absent") => {
+    if (typeof studentsSeats !== 'undefined') {
+      if (typeof studentsSeats[counter] !== 'undefined') {
+        if (typeof studentsSeats[counter][num] !== 'undefined') {
+          if (studentsSeats[counter][num].absent !== -1) {
+            if (type === 'absent') {
+              return studentsSeats[counter][num].absent
+            } else if (type === 'name') {
+              return studentsSeats[counter][num].name
+            }
+          }
+        }
+      }
+    }
+
+    return "??"
+  };
+
+  let counter = 0;
+  for (let i = 0; i < 5; i++) {
+    const seat = [];
+    for (let j = 0; j < 4; j++) {
+      seat.push(
+        <div className='flex-1 flex items-start box-border bg-surface-container-highest border-[0.2cqw] border-surface-container-highestest divide-x-[0.2cqw] divide-surface-container-highestest rounded-[1.5cqw]'>
+          {[0,1].map((num) => (
+            <div className='flex-1 h-[11cqw] box-border flex items-center justify-center py-[1.5cqw]'>
+              <span
+                className='text-[6.4cqw] tracking-wider text-center flex items-center justify-center w-full'
+                style={{color: `#${getColor(counter, num, i)}`}}
+              >
+                {getNameOrAbsent(counter, num, 'absent')}
+              </span>
+            </div>
+          ))}
+        </div>
+      );
+      counter++;
+    }
+
+    seats.push(
+      <div className='w-full flex items-center justify-center gap-[4cqw]'>
+        {seat}
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {seats}
+    </>
+  )
+}
+
 export default function Seat() {
   const CLASSDATA = [
     {name: 'X-1', value: '1'},
@@ -61,10 +178,10 @@ export default function Seat() {
   ];
 
   const DEFAULTPALLETE = [
-    '#FFFA9F',
-    '#9FFFA5',
     '#FF48C4',
     '#2196F3',
+    '#FFFA9F',
+    '#9FFFA5',
     '#FDA4AF',
     '#84A98C',
     '#F59E0B',
@@ -82,8 +199,8 @@ export default function Seat() {
   const [displaySeats, setDisplaySeats] = useState<studentsType[]>();
 
   const captureSeatsRef = useRef <HTMLDivElement | null>(null);
-  
-  function setMessageBoard(message: string, messageType: messageTypeCheck = "info") {
+
+  const setMessageBoard = (message: string, messageType: messageTypeCheck = "info") => {
     setMessage(message);
     setMessageType(messageType);
   }
@@ -109,18 +226,6 @@ export default function Seat() {
       return;
     }
 
-    // const blacklist = new Map();
-    // for (const entry of blacklistsPartner) {
-    //   if (!blacklist.has(entry.absent)) {
-    //     blacklist.set(entry.absent, new Set());
-    //   }
-    //   for (const blocked of entry.blacklistsPartner) {
-    //     blacklist.get(entry.absent).add(blocked);
-    //   }
-    // }
-
-    // console.log(blacklist.get(13));
-
     let studentsGirls: studentsType = [];
     let studentsBoys: studentsType = [];
 
@@ -128,7 +233,7 @@ export default function Seat() {
       if (student.gender === "P") studentsGirls.push(student);
       else if (student.gender === "L") studentsBoys.push(student);
     }
-    
+
     studentsGirls = shuffleArray(studentsGirls);
     studentsBoys = shuffleArray(studentsBoys);
 
@@ -155,12 +260,12 @@ export default function Seat() {
           if (studentsGirls.length === 1) {
             const studentGirl = studentsGirls.pop();
 
-            if (studentGirl) seatOrder.push([{absent: -1, gender: "P", smartness: 0, name: "??"}, studentGirl]);
+            if (studentGirl) seatOrder.push([{absent: -1, gender: "", smartness: 0, name: "??"}, studentGirl]);
             break;
           } else if (studentsBoys.length === 1) {
             const studentBoy = studentsBoys.pop();
 
-            if (studentBoy) seatOrder.push([studentBoy, {absent: -1, gender: "P", smartness: 0, name: "??"}]);
+            if (studentBoy) seatOrder.push([studentBoy, {absent: -1, gender: "", smartness: 0, name: "??"}]);
             break;
           }
 
@@ -200,27 +305,6 @@ export default function Seat() {
     }
 
     for (const seats of seatOrder) {
-      // if (!isCompatible(seats[0], seats[1]) || !isCompatible(seats[1], seats[0])) {
-      //   console.log(seats, isCompatible(seats[0], seats[1]) ? "Girl" : "", isCompatible(seats[1], seats[0]) ? "Boy" : "");
-      //   throw new Error("a");
-      // }
-
-
-
-      // if (!isCompatible(seats[0], seats[1])) {
-      //   for (const findingPartner of seatOrder) {
-      //     if (!isCompatible(seats[0], findingPartner[1])) {
-      //       console.log(seats, findingPartner);
-            
-      //       const temp1 = seats[1];
-
-      //       seatOrder.splice(seatOrder.indexOf(seats), 1, [seats[0], findingPartner[1]]);
-      //       seatOrder.splice(seatOrder.indexOf(findingPartner), 1, [findingPartner[0], temp1]);
-      //       break;
-      //     }
-      //   }
-      // }
-
       // code might accidentally swap already gud partner!
       for (const seatCurrent of seats) {
         for (const seatCheck of seats) {
@@ -250,7 +334,7 @@ export default function Seat() {
       }
     }
 
-    // console.log(seatOrder);
+    console.log(seatOrder);
 
     setDisplaySeats(seatOrder);
 
@@ -317,21 +401,21 @@ export default function Seat() {
   return (
     <>
       <div className="max-w-4xl mx-auto px-6 z-0 relative">
-        <div className="glass-panel rounded-lg p-8 space-y-6">
+        <div className="glass-panel rounded-lg p-8 space-y-6 border border-surface-container-highest">
             <InputSelect
               name="Class"
               dataset={CLASSDATA}
-              value={classSelected}
-              onChange={(e) => setClassSelected(e)}
+              value={`${CLASSNUMBER}-${classSelected}`}
+              onChange={(e) => {setClassSelected(e); setDisplaySeats(undefined)}}
             />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="relative flex flex-col gap-2">
-              <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+              <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
                 Set Color
-              </label>
+              </span>
 
-              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border-0 rounded-4xl px-7 py-3 gap-2 cursor-pointer ">
+              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-4xl px-7 py-3 gap-2">
                 <div className="relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none">
                   <span className="material-symbols-outlined">palette</span>
                   <div className="text-xl">
@@ -347,7 +431,7 @@ export default function Seat() {
             </div>
 
             <div className="relative flex flex-col gap-2">
-              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border-0 rounded-4xl px-7 py-3 gap-2 mt-0 md:mt-8 cursor-pointer">
+              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-4xl px-7 py-3 gap-2 mt-0 md:mt-8">
                 <div className="relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none">
                   <span className="material-symbols-outlined">palette</span>
                   <div className="text-xl">
@@ -373,7 +457,7 @@ export default function Seat() {
         {<ButtonProcess name="DOWNLOAD/SHARE SEAT" icon="download" onClick={() => void captureSeats()}/>}
       </div>
 
-      <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
+      {/* <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
         <div
           ref={captureSeatsRef}
           className="relative w-[99%] h-[99%] aspect-square mx-auto font-bold bg-white border-3 border-[#222222]"
@@ -422,10 +506,42 @@ export default function Seat() {
             className="absolute top-[33.6%] w-full h-full text-black"
             style={{ fontSize: '3.35cqw' }}
           >
-            <SeatRowElement left="0" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(0, 4)} />
-            <SeatRowElement left="26.8%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(4, 8)} />
-            <SeatRowElement left="53.7%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(8, 12)} />
-            <SeatRowElement left="82%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(12, 16)} />
+            <SeatColElement left="0" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(0, 4)} />
+            <SeatColElement left="26.8%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(4, 8)} />
+            <SeatColElement left="53.7%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(8, 12)} />
+            <SeatColElement left="82%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(12, 16)} />
+          </div>
+        </div>
+      </div> */}
+
+      <div className='max-w-4xl mx-auto mt-12 px-2 pointer-events-none'>
+        <div
+          ref={captureSeatsRef} 
+          className='aspect-square flex items-center justify-center'
+          style={{
+            containerType: 'size',
+          }}
+        >
+          <div className='w-full h-full glass-panel border-[0.11cqw] border-surface-container-highest rounded-[3.63cqw] box-border flex flex-col items-start justify-between p-[2cqw] pb-[6.2cqw] text-[2.4cqw] tracking-wider leading-normal overflow-hidden'>
+            <div className='w-full flex flex-col items-start px-[3.4cqw] gap-[0.6cqw] box-border'>
+              <div className='w-full h-[1.6cqw] rounded-[19.8cqw] bg-slate-200 border-[0.2cqw] border-slate-400/50 box-border'></div>
+              <span className='text-[2.4cqw] tracking-wider text-pink-500/80'>
+                Papan Tulis
+              </span>
+            </div>
+
+            <div className='w-full flex flex-col items-center py-0 px-[4cqw] gap-[0.2cqw] box-border'>
+              <div className='w-[22cqw] h-[11cqw] flex items-center justify-center bg-surface-container-highest border-[0.2cqw] border-surface-container-highestest box-content rounded-[1.5cqw]'>
+                <span style={{fontSize: '10cqw'}} className='material-symbols-outlined text-white'>account_box</span>
+              </div>
+              <span className='text-[2.4cqw] tracking-wider w-[22cqw] text-pink-500/80'>
+                Meja Guru
+              </span>
+            </div>
+
+            <div className='w-full flex-1 flex flex-col items-start justify-around px-[1.8cqw] box-border'>
+              <SeatRowGenerator11037 studentsSeats={displaySeats} girlColor={girlColor} boyColor={boyColor} />
+            </div>
           </div>
         </div>
       </div>
