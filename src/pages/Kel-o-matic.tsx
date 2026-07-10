@@ -306,22 +306,22 @@ export default function Kel() {
         message={(
         <>
           <div className="mb-8 flex justify-between items-center min-h-auto">
-            <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Input explanation</div>
+            <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-primary">Input explanation</div>
           </div>
           
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Generation type</div>
+          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary-dim">Generation type</div>
           <div className="tracking-wide">Controls result format — <b><i>Student Absent</i></b> shows numbers, <b><i>Student Name</i></b> shows short names.</div>
           <div className="h-4"></div>
 
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Type search</div>
+          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary-dim">Type search</div>
           <div className="tracking-wide">Choose <b><i>Group</i></b> to set number of groups, or <b><i>Member</i></b> to set students per group.</div>
           <div className="h-4"></div>
 
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">How much</div>
-          <div className="tracking-wide">The 'n' for Type Search. For example, <mark style={{backgroundColor: "#743665", color: "white"}}><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark style={{backgroundColor: "#743665", color: "white"}}><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
+          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary-dim">How much</div>
+          <div className="tracking-wide">The 'n' for Type Search. For example, <mark style={{backgroundColor: "#FF8C69", color: "black"}} className='px-1'><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark style={{backgroundColor: "#FF8C69", color: "black"}} className='px-1'><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
           <div className="h-4"></div>
 
-          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Smart finder</div>
+          <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary-dim">Smart finder</div>
           <div className="tracking-wide">Currently unavailable. because the dev is not in the mood to add this feature {"</3"}. this is a intensive feature and chalange dev moral to add this.</div>
         </>
       )}
@@ -333,7 +333,7 @@ export default function Kel() {
       <div className="absolute bottom-40 -right-20 w-125 h-125 bg-secondary-dim/5 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-6 z-0 relative">
-        <div className="glass-panel rounded-lg p-8 space-y-6">
+        <div className="bg-[#0f1c2799] border border-[#003B4D73] rounded-lg p-8 space-y-6">
           <div className="absolute right-0 pr-8 top-0 pt-6">
             <button
               className="text-on-surface-variant text-lg hover:text-on-surface flex justify-end items-center gap-3 rounded-full glass-panel py-2 pr-2 pl-3 max-w-11 hover:max-w-xl truncate transition-all cursor-pointer"
@@ -398,8 +398,8 @@ export default function Kel() {
             />
 
             <div className="relative flex flex-col gap-2">
-              <div className="flex items-center justify-between w-full bg-surface-container-low border-0 rounded-full px-6 h-15 md:mt-8 gap-2">
-                <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+              <div className="flex items-center justify-between w-full bg-surface-container-low border-0 rounded-full px-6 h-15 md:mt-8 gap-2 opacity-50 cursor-not-allowed"> {/* remove opacity-50 and cursor-not-allowed if you wanna enable this */}
+                <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1"> 
                   Smart Finder
                 </label>
 
@@ -430,6 +430,7 @@ export default function Kel() {
           name="DOWNLOAD/SHARE GROUP"
           icon="download"
           onClick={() => void captureGroups()}
+          visualPriority='secondary'
         />}
       </div>
 

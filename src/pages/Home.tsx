@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { waapi, stagger, splitText, spring, createTimeline, createScope, Timeline, animate, onScroll, JSAnimation, scrambleText } from 'animejs';
+import { waapi, stagger, splitText, spring, createTimeline, createScope, Timeline, animate, onScroll, JSAnimation, cubicBezier } from 'animejs';
 import LightRays from '../../@/components/LightRays';
 import Strands from '../../@/components/Strands';
-import { ReactLenis } from 'lenis/react';
+import { ReactLenis, useLenis } from 'lenis/react';
 
 function animateChars(chars: HTMLElement[]) {
   const baseConfig = {
@@ -53,13 +53,27 @@ export default function Home() {
     }
   }, []);
 
-  function goToFeaturedItem() {
-    // const el = document.querySelector('#cool-animation-cards')
-    // if (el) {
-    //   const top = el.getBoundingClientRect().top + window.scrollY - 400
-    //   window.scrollTo({ top, behavior: 'smooth' })
-    // }
+
+
+  
+  const lenis = useLenis()
+  const problemStatementRef = useRef<HTMLElement>(null);
+
+  function HandleStartScrollingOnHome() {
+    if (!problemStatementRef) return
+    const problemStatementSection = problemStatementRef.current
+
+    if (problemStatementSection) {
+      lenis?.scrollTo('#problem-statement-text', {
+        duration: 2,
+        easing: cubicBezier(0.62, 0.002,0.396,1.013),
+        offset: -300
+      })
+    }
   }
+
+
+
 
   const scrollSpaceRef = useRef<HTMLDivElement>(null);
   const scrollStageRef = useRef<HTMLDivElement>(null);
@@ -240,39 +254,45 @@ export default function Home() {
     function updateStickyStage(rect: DOMRect) {
       const navbarH = 90;
       let nextState: StickyState;
-  
+    
       if (rect.top <= navbarH && rect.bottom >= lvhReference) {
-          nextState = 'fixed';
+        nextState = 'fixed';
       } else if (rect.bottom < lvhReference) {
-          nextState = 'bottom';
+        nextState = 'bottom';
       } else {
-          nextState = 'top';
+        nextState = 'top';
       }
-  
-      if (nextState === stickyState) return;
-
+    
+      const stateChanged = nextState !== stickyState;
       stickyState = nextState;
+    
       switch (stickyState) {
-          case 'fixed':
-              scrollStage!.style.position = "fixed";
-              scrollStage!.style.top = `${navbarH}px`;
+        case 'fixed':
+          scrollStage!.style.position = "fixed";
+          scrollStage!.style.top = `${navbarH}px`;
+          scrollStage!.style.left = `${rect.left}px`; 
               scrollStage!.style.left = `${rect.left}px`;
+          scrollStage!.style.left = `${rect.left}px`; 
+          scrollStage!.style.width = `${rect.width}px`;    
               scrollStage!.style.width = `${rect.width}px`;
-              scrollStage!.style.height = `${lvhReference - navbarH}px`;
-              scrollStage!.style.bottom = "auto";
-              break;
-  
-          case 'bottom':
-              scrollStage!.style.position = "absolute";
-              scrollStage!.style.top = "auto";
-              scrollStage!.style.bottom = "0";
-              break;
-
-          case 'top':
-              scrollStage!.style.position = "absolute";
-              scrollStage!.style.top = "0";
-              scrollStage!.style.bottom = "auto";
-              break;
+          scrollStage!.style.width = `${rect.width}px`;    
+          scrollStage!.style.height = `${lvhReference - navbarH}px`;
+          scrollStage!.style.bottom = "auto";
+          break;
+    
+        case 'bottom':
+          if (!stateChanged) return; 
+          scrollStage!.style.position = "absolute";
+          scrollStage!.style.top = "auto";
+          scrollStage!.style.bottom = "0";
+          break;
+    
+        case 'top':
+          if (!stateChanged) return;
+          scrollStage!.style.position = "absolute";
+          scrollStage!.style.top = "0";
+          scrollStage!.style.bottom = "auto";
+          break;
       }
     }
 
@@ -282,15 +302,20 @@ export default function Home() {
       updateStickyStage(rect)
     }
 
-    let resizeTimeout: ReturnType<typeof setTimeout>
+    let resizeTimeout: ReturnType<typeof setTimeout>;
 
     function onResize() {
       clearTimeout(resizeTimeout)
-
+    
       resizeTimeout = setTimeout(() => {
         const rect = scrollSpace!.getBoundingClientRect()
-        targetProgress = getProgress()
-        updateStickyStage(rect)
+        
+        updateStickyStage(rect)          
+        targetProgress = getProgress()   
+        currentProgress = targetProgress 
+        
+        tl.seek(currentProgress * (totalDuration * (currentProgress / 0.3))) 
+        
       }, 150)
     }
     
@@ -308,6 +333,10 @@ export default function Home() {
       tl.cancel()
     }
   }, [loadedHeroImagesCount])
+
+  
+
+
 
   const featuresAnimInitialized = useRef(false);
   const featureItemsRef = useRef<HTMLElement>(null);
@@ -402,6 +431,10 @@ export default function Home() {
     }
   }, []);
 
+
+
+
+
   // HOW IT WORKS ANIMATION -------------------------------------------------------------
   const HowItWorksSectionRef = useRef<HTMLElement>(null);
   const howItWorksAnimInitialized = useRef(false);
@@ -417,7 +450,6 @@ export default function Home() {
     if (!HowItWorksSection) return
 
     const howItWorksSteps = HowItWorksSection.querySelectorAll<HTMLSpanElement>('.how-it-works-text') ?? [];
-    console.log(howItWorksSteps[0])
     
     const step1anim = animate(howItWorksSteps[0], {
       opacity: {from: '0', to: '1'},
@@ -463,6 +495,10 @@ export default function Home() {
     }
   }, [])
 
+
+
+
+
   // TESTIMONIAL PROOF ANIMATION OPTIMIZATION --------------------------------------------------------------
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -486,7 +522,7 @@ export default function Home() {
 
   return (
     <>
-      <ReactLenis options={{wheelMultiplier: 0.65,}}/>
+      <ReactLenis root options={{wheelMultiplier: 0.65,}}/>
       <div id="lvh-ruler" className='bg-amber-100/40 h-lvh' style={{position: "fixed", width: "0px",}}></div>
     
       <div ref={scrollSpaceRef} className='absolute scroll-space h-[calc(380lvh+75px)] w-dvw pointer-events-none z-10 top-12.5'>
@@ -527,12 +563,12 @@ export default function Home() {
           <span>simplify</span> <span>Your</span> <span>class</span> <span>management</span>
         </h1>
 
-        <p className="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-5 leading-relaxed px-4 text-balance">
+        <p className="text-on-surface-variant text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-5 leading-relaxed px-4 text-balance">
           Using modern technologies to solve class problems in school 
         </p>
 
         <button
-          onClick={goToFeaturedItem}
+          onClick={HandleStartScrollingOnHome}
           className="mx-auto px-8 py-4 rounded-full [background:linear-gradient(-67.69deg,#009dcc,#a3eaff_40%,#a3eaff_70.67%,#e9faff)] text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_20px_#a3eaff] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto"
         >
           Get Started
@@ -547,8 +583,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id='problem-statement' className='h-[200lvh] flex items-center z-30'>
-          <div className='mx-auto w-[min(90%,800px)] text-lg z-30 '>In classes, there are some stuff or tasks for managing class that can be tedious and repetitive, like making a group for example. So we came with a tool that helps making these tasks easier and faster.</div>
+      <section ref={problemStatementRef} id='problem-statement' className='h-[200lvh] flex items-center z-30'>
+          <div id='problem-statement-text' className='mx-auto w-[min(90%,800px)] text-lg z-30 '>In classes, there are some stuff or tasks for managing class that can be tedious and repetitive, like making a group for example. So we came with a tool that helps making these tasks easier and faster.</div>
       </section>
 
       {/* ── Feature Cards ── */}
@@ -668,9 +704,43 @@ export default function Home() {
       <section id='final-cta' className='mt-60'>
         <h2 style={{fontFamily: 'QuanticoBold'}} className='text-[38px] xsm:text-[42px] text-center text-balance px-4 leading-12 my-18'>Choose your tool now</h2>
         <div className='max-w-5xl w-[90%] xsm:w-[80%] mx-auto h-auto grid grid-cols-[repeat(auto-fit,minmax(275px,1fr))] gap-6'>
-          <div className='bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm h-50'></div>
-          <div className='bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm h-50'></div>
-          {/* <div className='bg-[#0F1C2799] border border-[#003B4D73] box-border h-20'></div> */}
+          
+          <div id='seat-o-matic-option' className='overflow-hidden relative flex final-cta-choice p-4 bg-[#0F1C2799] border-2 border-[#003B4D73] box-border rounded-sm h-50'>
+            <div className='z-10 flex flex-col'>
+              <h3 className='text-[25px] font-bold tracking-wide pb-1 px-1 '>Seat-O-Matic</h3>
+              <div className='text-balance max-w-60 pt-2 px-1 border-t border-primary-dim/40'>Make seat-charts with alternating gender layout</div>
+              <Link to={'/seat-o-matic'} className="mt-auto px-5 py-2 w-fit rounded-full [background:#a3eaff] text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_10px_#a3eaff] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto">Use this Tool</Link>
+            </div>
+            
+            <div className='w-80 absolute z-0 brightness-80 left-[75%] top-1/2 -translate-x-1/2 -translate-y-1/2'>
+              <img style={{maskImage: 'linear-gradient(90deg,transparent 15%,red 85%)'}} src="/images/seat-o-matic-image.jpg" alt="seat-o-matic image" className="object-cover h-full block" />
+            </div>
+          </div>
+          
+          <div id='seat-o-matic-option' className='overflow-hidden relative flex final-cta-choice p-4 bg-[#0F1C2799] border-2 border-[#003B4D73] box-border rounded-sm h-50'>
+            <div className='z-10 flex flex-col'>
+              <h3 className='text-[25px] font-bold tracking-wide pb-1 px-1 '>Kel-O-Matic</h3>
+              <div className='text-balance max-w-60 pt-2 px-1 border-t border-primary-dim/40'>Create groups with balanced gender ratio distribution</div>
+              <Link to={'/kel-o-matic'} className="mt-auto px-5 py-2 w-fit rounded-full [background:#a3eaff] text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_10px_#a3eaff] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto">Use this Tool</Link>
+            </div>
+            
+            <div className='w-100 absolute z-0 brightness-80 left-[95%] top-1/2 -translate-x-1/2 -translate-y-1/2'>
+              <img style={{maskImage: 'linear-gradient(90deg,transparent 15%,red 85%)'}} src="/images/kel-o-matic-image.jpg" alt="seat-o-matic image" className="object-cover h-full block" />
+            </div>
+          </div>
+          
+          {/* <div id='seat-o-matic-option' className='overflow-hidden relative flex final-cta-choice p-4 bg-[#0F1C2799] border-2 border-[#003B4D73] box-border rounded-sm h-50'>
+            <div className='z-10 flex flex-col'>
+              <h3 className='text-[20px] font-bold tracking-wide pb-1 px-1 '>Task-Annoucer-O-Matic</h3>
+              <div className='text-balance max-w-60 pt-2 px-1 border-t border-primary-dim/40'>Get a notification/reminder for tasks you may forget</div>
+              <Link to={'/kel-o-matic'} className="mt-auto px-5 py-2 w-fit rounded-full [background:#a3eaff] text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_10px_#a3eaff] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto">Use this Tool</Link>
+            </div>
+            
+            <div className='w-80 absolute z-0 brightness-80 left-[75%] top-1/2 -translate-x-1/2 -translate-y-1/2'>
+              <img style={{maskImage: 'linear-gradient(90deg,transparent 15%,red 85%)'}} src="/images/not-found.png" alt="seat-o-matic image" className="object-cover h-full block" />
+            </div>
+          </div> */}
+
         </div>
       </section>
     </>

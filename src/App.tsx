@@ -75,10 +75,8 @@ export default function App() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 w-[95%] flex items-center justify-between px-6 h-16 rounded-full mt-4 mx-auto max-w-4xl bg-slate-950/60 backdrop-blur-xl shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
         <div className="flex items-center gap-2 select-none">
-          <span className="material-symbols-outlined text-pink-500">
-            terminal
-          </span>
-          <span className="text-[32px] font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-violet-500">
+          <img src="/icon/o-matic logo v3.svg" alt="logo" className='mx-2 w-12'/>
+          <span className="text-[32px] font-bold pl-1 tracking-tight text-transparent bg-clip-text bg-linear-to-r from-primary-dim to-secondary-dim">
             O-Matic
           </span>
         </div>
@@ -89,8 +87,8 @@ export default function App() {
             to={links[0].to}
             className={({ isActive }) =>
               isActive
-                ? 'text-[26px] text-pink-500 font-bold hover:bg-pink-500/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
-                : 'text-[24px] text-slate-400 hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
+                ? 'text-[26px] text-primary font-bold hover:bg-primary/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
+                : 'text-[24px] text-on-surface hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
             }
           >
             {links[0].label}
@@ -105,8 +103,8 @@ export default function App() {
               onClick={() => setIsOpen(!isOpen)}
               className={
                 toolsIsActive
-                  ? 'text-[26px] text-pink-500 font-bold hover:bg-pink-500/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight flex gap-1 items-center '
-                  : 'text-[24px] text-slate-400 hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight flex gap-1 items-center '
+                  ? 'text-[26px] text-primary font-bold hover:bg-primary/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight flex gap-1 items-center '
+                  : 'text-[24px] text-on-surface hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight flex gap-1 items-center '
               }
             >
               <div>Utils</div>
@@ -131,8 +129,8 @@ export default function App() {
               }}
               className={
                 isOpen
-                  ? 'dropdown-menu absolute top-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md transition pointer-events-auto'
-                  : 'transition dropdown-menu absolute top-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md opacity-0 pointer-events-none'
+                  ? 'overflow-hidden dropdown-menu absolute top-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md transition pointer-events-auto'
+                  : 'overflow-hidden transition dropdown-menu absolute top-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md opacity-0 pointer-events-none'
               }
             >
               {links.slice(2).map((link) => (
@@ -141,8 +139,8 @@ export default function App() {
                   to={link.to}
                   className={({ isActive }) =>
                     isActive
-                      ? 'text-[21px] text-pink-500 font-bold hover:bg-pink-500/20 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight'
-                      : 'text-[20px] text-slate-400 hover:bg-white/8 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight w-50'
+                      ? 'text-[21px] text-primary font-bold hover:bg-primary/20 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight'
+                      : 'text-[20px] text-on-surface hover:bg-white/8 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight w-50'
                   }
                 >
                   {link.label}
@@ -156,8 +154,8 @@ export default function App() {
             to={links[1].to}
             className={({ isActive }) =>
               isActive
-                ? 'text-[26px] text-pink-500 font-bold hover:bg-pink-500/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
-                : 'text-[24px] text-slate-400 hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
+                ? 'text-[26px] text-primary font-bold hover:bg-primary/20 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
+                : 'text-[24px] text-on-surface hover:bg-white/8 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight'
             }
           >
             {links[1].label}
@@ -172,8 +170,8 @@ export default function App() {
             to={links[0].to}
             className={({ isActive }) =>
               isActive
-                ? 'bg-pink-600 text-white rounded-full h-[3.2rem] aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
-                : 'text-slate-400 hover:text-pink-300 p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                ? 'bg-primary-dim text-black rounded-full h-[3.2rem] aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                : 'text-on-surface hover:text-primary-dim p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
             }
           >
             <span className="material-symbols-outlined text-[32px]">
@@ -191,8 +189,8 @@ export default function App() {
               onClick={() => setIsOpen(!isOpen)}
               className={
                 toolsIsActive
-                  ? 'bg-pink-600 text-white rounded-full h-12 aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
-                  : 'text-slate-400 hover:text-pink-300 p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                  ? 'bg-primary-dim text-black rounded-full h-12 aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                  : 'text-on-surface hover:text-primary-dim p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
               }
             >
               <div className="material-symbols-outlined">apps</div>
@@ -217,8 +215,8 @@ export default function App() {
               }}
               className={
                 isOpen
-                  ? 'dropdown-menu absolute bottom-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md transition pointer-events-auto'
-                  : 'transition dropdown-menu absolute bottom-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md opacity-0 pointer-events-none'
+                  ? 'overflow-hidden dropdown-menu absolute bottom-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md transition pointer-events-auto'
+                  : 'overflow-hidden transition dropdown-menu absolute bottom-[150%] left-1/2 -translate-x-1/2 w-100px flex flex-col bg-slate-900 border-2 border-outline-variant/50 rounded-md opacity-0 pointer-events-none'
               }
             >
               {links.slice(2).map((link) => (
@@ -227,8 +225,8 @@ export default function App() {
                   to={link.to}
                   className={({ isActive }) =>
                     isActive
-                      ? 'text-[21px] text-pink-500 font-bold hover:bg-pink-500/20 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight'
-                      : 'text-[20px] text-slate-400 hover:bg-white/8 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight w-50'
+                      ? 'text-[21px] text-primary-dim font-bold hover:bg-primary/20 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight'
+                      : 'text-[20px] text-on-surface hover:bg-white/8 transition-all duration-300 px-3 py-1 active:scale-95 tracking-tight w-50'
                   }
                 >
                   {link.label}
@@ -242,8 +240,8 @@ export default function App() {
             to={links[1].to}
             className={({ isActive }) =>
               isActive
-                ? 'bg-pink-600 text-white rounded-full h-12 aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
-                : 'text-slate-400 hover:text-pink-300 p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                ? 'bg-primary-dim text-black rounded-full h-12 aspect-square p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
+                : 'text-on-surface hover:text-primary-dim p-3 active:scale-90 transition-transform items-center justify-center flex cursor-pointer'
             }
           >
             <span className="material-symbols-outlined text-[32px]">

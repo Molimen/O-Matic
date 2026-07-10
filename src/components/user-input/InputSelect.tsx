@@ -14,11 +14,11 @@ export default function InputSelect({
   return (
     <>
       <div className="relative flex flex-col gap-2">
-        <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+        <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
           {name}
         </label>
 
-        <select className="w-full bg-surface-container-highest border-0 rounded-full py-4 px-6 text-on-surface text-lg appearance-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer"
+        <select className="w-full bg-[#1c2731] border-0 rounded-full py-4 px-6 text-on-surface text-lg appearance-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer"
           value={value}
           onChange={(e) => onChange(e.target.value)}
         >
@@ -27,7 +27,7 @@ export default function InputSelect({
           ))}
         </select>
 
-        <span className="material-symbols-outlined absolute right-3 top-13 text-on-surface-variant pointer-events-none">
+        <span className="material-symbols-outlined absolute right-4 top-13 text-on-surface-variant pointer-events-none">
           expand_more
         </span>
       </div>

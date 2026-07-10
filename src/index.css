@@ -280,18 +280,6 @@ img {
   will-change: transform;
 }
 
-/* .testimonial-group {
-  animation: testimonial-anim 25s infinite linear;
-  will-change: transform;
-}
-
-@keyframes testimonial-anim {
-  from {
-    transform: translateY(0%);
-  } to {
-    transform: translateY(-100%);
-  }
-} */
 
 @theme inline {
   --font-heading: var(--font-sans);

@@ -327,7 +327,7 @@ export default function Seat() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="relative flex flex-col gap-2">
-              <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+              <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
                 Set Color
               </label>
 
@@ -368,9 +368,9 @@ export default function Seat() {
       </div>
 
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
-        {<ButtonProcess name="PROCESS SEAT" icon="settings_input_component" onClick={() => void generateSeats()}/>}
+        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon="settings_input_component" onClick={() => void generateSeats()}/>}
 
-        {<ButtonProcess name="DOWNLOAD/SHARE SEAT" icon="download" onClick={() => void captureSeats()}/>}
+        {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE SEAT" icon="download" onClick={() => void captureSeats()}/>}
       </div>
 
       <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
