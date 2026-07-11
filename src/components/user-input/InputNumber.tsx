@@ -20,7 +20,7 @@ export default function InputNumber({
           {name}
         </span>
 
-        <div className="flex items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-[1.75rem] px-5 max-h-15 gap-2 hover:ring-2 hover:ring-primary/50 transition-all">
+        <div className="flex items-center w-full bg-[#1c2731] border-0 rounded-full px-5 gap-2">
           <button 
             className="text-on-surface-variant hover:text-on-surface transition text-xl font-bold material-symbols-outlined cursor-pointer"
             onClick={() => onChange(undefined, "minus")}

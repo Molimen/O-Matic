@@ -32,10 +32,8 @@ export default function App() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 w-[95%] flex items-center justify-between px-6 h-16 rounded-full mt-4 mx-auto max-w-4xl bg-slate-950/60 backdrop-blur-xl shadow-[0_0_40px_-10px_rgba(216,27,96,0.2)]">
         <div className="flex items-center gap-2 select-none">
-          <span className="material-symbols-outlined text-pink-500">
-            terminal
-          </span>
-          <span className="text-[32px] font-bold tracking-tight text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-violet-500">
+          <img src="/icon/o-matic logo v3.svg" alt="logo" className='mx-2 w-12'/>
+          <span className="text-[32px] font-bold pl-1 tracking-tight text-transparent bg-clip-text bg-linear-to-r from-primary-dim to-secondary-dim">
             O-Matic
           </span>
         </div>

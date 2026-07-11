@@ -7,12 +7,15 @@ export default function MessageInformation({
   message: string;
   messageType: messageTypeCheck
 }) {
-  let colorType
+  let colorType;
+  let bgColorType;
 
   if (messageType === "info") {
     colorType = "text-neon-green";
+    bgColorType = "bg-linear-to-r from-emerald-800/70 to-transparent to-90%";
   } else if (messageType === "error") {
     colorType = "text-error";
+    bgColorType = "bg-linear-to-r from-red-800/70 to-transparent to-90%";
   } else {
     colorType = "text-white"
   }
@@ -24,7 +27,7 @@ export default function MessageInformation({
           {name}
         </span>
 
-        <span className={`w-full bg-surface-container-highest border border-surface-container-highestest rounded-lg py-4 px-6 min-h-15 text-xl ${colorType}`}>
+        <span className={`transition duration-350 w-full rounded-sm py-4 px-6 text-xl ${colorType} ${bgColorType}`}>
           {message}
         </span>
       </div>

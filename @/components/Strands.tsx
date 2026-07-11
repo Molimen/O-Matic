@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle, RenderTarget } from 'ogl';
-import { useEffect, useRef, CSSProperties } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 
 import './Strands.css';
 

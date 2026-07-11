@@ -333,7 +333,7 @@ export default function Kel() {
       <div className="absolute bottom-40 -right-20 w-125 h-125 bg-secondary-dim/5 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto px-6 z-0 relative">
-        <div className="glass-panel rounded-lg p-8 space-y-6 border border-surface-container-highest">
+        <div className="bg-[#0f1c2799] border border-[#003B4D73] rounded-lg p-8 space-y-6">
           <div className="absolute right-0 pr-8 top-0 pt-6">
             <button
               className="text-on-surface-variant text-lg hover:text-on-surface flex justify-end items-center gap-3 rounded-full glass-panel py-2 pr-2 pl-3 max-w-11 hover:max-w-xl truncate transition-all cursor-pointer"
@@ -430,6 +430,7 @@ export default function Kel() {
           name="DOWNLOAD/SHARE GROUP"
           icon="download"
           onClick={() => void captureGroups()}
+          visualPriority='secondary'
         />}
       </div>
 
