@@ -27,7 +27,7 @@ export default function MessageInformation({
           {name}
         </span>
 
-        <span className={`transition duration-350 w-full rounded-sm py-4 px-6 text-xl ${colorType} ${bgColorType}`}>
+        <span className={`transition duration-350 w-full rounded-full py-4 px-6 text-xl ${colorType} ${bgColorType}`}>
           {message}
         </span>
       </div>

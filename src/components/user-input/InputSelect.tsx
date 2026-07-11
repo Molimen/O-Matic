@@ -41,19 +41,6 @@ export default function InputSelect({
           {name}
         </label>
 
-        <select className="w-full bg-[#1c2731] border-0 rounded-full py-4 px-6 text-on-surface text-lg appearance-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          {dataset.map((data) => (
-            <option key={data.name} value={data.value}>{data.name}</option>
-          ))}
-        </select>
-
-        <span className="material-symbols-outlined absolute right-4 top-13 text-on-surface-variant pointer-events-none">
-          expand_more
-        </span>
-
         <Dropdown value={value} dataset={dataset} onChange={onChange} />
       </div>
     </>

@@ -97,7 +97,6 @@ export default function Home() {
     const gear   = scrollStage.querySelector<HTMLImageElement>('#gear');
     if (!tablet || !pen || !gear) return
 
-    let tl: Timeline;
     let tabletTimeline: Timeline;
     let penTimeline: Timeline;
     let gearTimeline: Timeline;
@@ -214,7 +213,7 @@ export default function Home() {
       
     })
 
-    tl = createTimeline({autoplay: false}).sync(tabletTimeline!).sync(penTimeline!, '-=1750').sync(gearTimeline!, '-=1750')
+    const tl: Timeline = createTimeline({autoplay: false}).sync(tabletTimeline!).sync(penTimeline!, '-=1750').sync(gearTimeline!, '-=1750');
     // -----------------------------------------------------------------------------------------------
 
     tlRef.current = tl

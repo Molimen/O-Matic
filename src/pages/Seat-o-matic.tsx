@@ -3,75 +3,12 @@ import InputSelect from '../components/user-input/InputSelect';
 import MessageInformation, {type messageTypeCheck} from '../components/user-input/Message';
 import useLocalStorage from '../utils/useLocalStorage';
 import ColorPicker from "../components/user-input/ColorPicker";
-import hexToBrightness from '../utils/hexToBrightness';
 import { useRef, useState } from 'react';
 import getStudentsData, { type studentsType, type studentType } from '../services/getStudentsData';
 import shuffleArray from '../utils/shuffleArray';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
 import { snapdom } from "@zumer/snapdom";
 import CLASSNUMBER from '../utils/classNumber';
-
-function SeatColElement({ left, girlColor, boyColor, studentsSeats }: { left: string, girlColor: string, boyColor: string, studentsSeats: studentsType[] | undefined }) {
-  const girlTextColor = hexToBrightness(girlColor) > 0.179 ? 'black' : 'white';
-  const boyTextColor = hexToBrightness(boyColor) > 0.179 ? 'black' : 'white';
-
-  const seats = [];
-
-  for (let i = 0; i < 4; i++) {
-    if (typeof studentsSeats !== 'undefined' && typeof studentsSeats[i] === 'undefined') {
-      seats.push(
-        <div key={`${left} ${i}`}>
-          <div
-            key={`${i} seat 1`}
-            className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "left-[50.7%]" : ""}`}
-            style={{ fontSize: '6.1cqw', backgroundColor: `#${boyColor}`, color: `${boyTextColor}`, top: `${25*i}%` }}
-          >
-            ??
-          </div>
-          <div
-            key={`${i} seat 2`}
-            className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "" : "left-[50.7%]"}`}
-            style={{ fontSize: '6.1cqw', backgroundColor: `#${girlColor}`, color: `${girlTextColor}`, top: `${25*i}%` }}
-          >
-            ??
-          </div>
-        </div>
-      );
-      continue;
-    }
-
-    seats.push(
-      <div key={`${left} ${i}`}>
-        <div
-          key={`${i} seat 1`}
-          className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "left-[50.7%]" : ""}`}
-          style={{ fontSize: '6.1cqw', backgroundColor: `#${typeof studentsSeats !== "undefined" ? studentsSeats[i][0].gender === "P" ? girlColor : boyColor : boyColor}`, color: `${typeof studentsSeats !== "undefined" ? studentsSeats[i][0].gender === "P" ? girlTextColor : boyTextColor : boyTextColor}`, top: `${25*i}%` }}
-        >
-          {typeof studentsSeats !== "undefined" && studentsSeats[i][0].absent !== -1 ? studentsSeats[i][0].absent : "??"}
-        </div>
-        <div
-          key={`${i} seat 2`}
-          className={`absolute flex w-[49.2%] h-[24.7%] justify-center items-center text-black z-2 ${i % 2 !== 0 ? "" : "left-[50.7%]"}`}
-          style={{ fontSize: '6.1cqw', backgroundColor: `#${typeof studentsSeats !== "undefined" ? studentsSeats[i][1].gender === "P" ? girlColor : boyColor : girlColor}`, color: `${typeof studentsSeats !== "undefined" ? studentsSeats[i][1].gender === "P" ? girlTextColor : boyTextColor : girlTextColor}`, top: `${25*i}%` }}
-        >
-          {typeof studentsSeats !== "undefined" && studentsSeats[i][1].absent !== -1 ? studentsSeats[i][1].absent : "??"}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div
-        className="absolute w-[18.2%] h-[66.6%] border-2 border-black bg-black"
-        style={{ left: left }}
-      >
-        <div className="absolute left-[49.2%] w-[3%] h-full bg-black z-2"></div>
-        {seats}
-      </div>
-    </>
-  )
-}
 
 function SeatRowGenerator11037({
   studentsSeats,
