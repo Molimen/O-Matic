@@ -55,12 +55,12 @@ export default function Dropdown({
           ref={dropdownRef} 
           className={
             (hidden ? "opacity-0 pointer-events-none" : 'opacity-100 pointer-events-auto') +
-            " flex flex-col absolute top-18 z-10 bg-surface-container-highest border-2 border-surface-container-highestest divide-y-2 divide-surface-container-highestest rounded-[1.75rem] w-full hover:ring-2 hover:ring-primary/50 overflow-hidden transition-all"
+            " flex flex-col absolute top-18 z-10 bg-surface-container-highest border-2 border-surface-container-highestest divide-y-2 divide-surface-container-highestest rounded-lg w-full hover:ring-2 hover:ring-primary/50 overflow-hidden transition-all"
           }
         >
           {dataset.map((data) => (
             <button
-              className="flex pl-6 py-1 items-start cursor-pointer transition-all hover:bg-surface-container-high"
+              className="flex pl-6 py-1 items-start cursor-pointer transition-all hover:bg-surface-container-low"
               onClick={(e) => {onChange(e.currentTarget.value); setHidden(true)}}
               value={data.value}
             >

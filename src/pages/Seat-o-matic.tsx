@@ -106,12 +106,12 @@ function SeatRowGenerator11037({
 
 export default function Seat() {
   const CLASSDATA = [
-    {name: 'X-1', value: '1'},
-    {name: 'X-2', value: '2'},
-    {name: 'X-3', value: '3'},
-    {name: 'X-4', value: '4'},
-    {name: 'X-5', value: '5'},
-    {name: 'X-6', value: '6'},
+    {name: 'XI-1', value: '1'},
+    {name: 'XI-2', value: '2'},
+    {name: 'XI-3', value: '3'},
+    {name: 'XI-4', value: '4'},
+    {name: 'XI-5', value: '5'},
+    {name: 'XI-6', value: '6'},
   ];
 
   const DEFAULTPALLETE = [
@@ -127,8 +127,8 @@ export default function Seat() {
 
   const [classSelected, setClassSelected] = useLocalStorage("classSelected", "1");
 
-  const [boyColor, setBoyColor] = useLocalStorage("boyColor", "9FFFA5");
-  const [girlColor, setGirlColor] = useLocalStorage("girlColor", "FFFA9F");
+  const [boyColor, setBoyColor] = useLocalStorage("boyColor", "2196F3");
+  const [girlColor, setGirlColor] = useLocalStorage("girlColor", "FF48C4");
 
   const [message, setMessage] = useState("Nothing to Do");
   const [messageType, setMessageType] = useState<messageTypeCheck>("info");
@@ -338,7 +338,7 @@ export default function Seat() {
   return (
     <>
       <div className="max-w-4xl mx-auto px-6 z-0 relative">
-        <div className="glass-panel rounded-lg p-8 space-y-6 border border-surface-container-highest">
+        <div className="glass-panel rounded-lg py-8 px-5 space-y-6 border border-surface-container-highest">
             <InputSelect
               name="Class"
               dataset={CLASSDATA}
@@ -348,7 +348,7 @@ export default function Seat() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="relative flex flex-col gap-2">
-              <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+              <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
                 Set Color
               </span>
 
@@ -391,7 +391,7 @@ export default function Seat() {
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
         {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon="settings_input_component" onClick={() => void generateSeats()}/>}
 
-        {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE SEAT" icon="download" onClick={() => void captureSeats()}/>}
+        {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE" icon="download" onClick={() => void captureSeats()}/>}
       </div>
 
       {/* <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
@@ -462,7 +462,7 @@ export default function Seat() {
           <div className='w-full h-full glass-panel border-[0.11cqw] border-surface-container-highest rounded-[3.63cqw] box-border flex flex-col items-start justify-between p-[2cqw] pb-[6.2cqw] text-[2.4cqw] tracking-wider leading-normal overflow-hidden'>
             <div className='w-full flex flex-col items-start px-[3.4cqw] gap-[0.6cqw] box-border'>
               <div className='w-full h-[1.6cqw] rounded-[19.8cqw] bg-slate-200 border-[0.2cqw] border-slate-400/50 box-border'></div>
-              <span className='text-[2.4cqw] tracking-wider text-pink-500/80'>
+              <span className='text-[2.4cqw] tracking-wider text-primary-fixed/80'>
                 Papan Tulis
               </span>
             </div>
@@ -471,7 +471,7 @@ export default function Seat() {
               <div className='w-[22cqw] h-[11cqw] flex items-center justify-center bg-surface-container-highest border-[0.2cqw] border-surface-container-highestest box-content rounded-[1.5cqw]'>
                 <span style={{fontSize: '10cqw'}} className='material-symbols-outlined text-white'>account_box</span>
               </div>
-              <span className='text-[2.4cqw] tracking-wider w-[22cqw] text-pink-500/80'>
+              <span className='text-[2.4cqw] tracking-wider w-[22cqw] text-primary-fixed/80'>
                 Meja Guru
               </span>
             </div>

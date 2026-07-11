@@ -80,6 +80,11 @@ function DropdownMenuMore({
     };
   }, [hidden]);
 
+  const toolsLink: string[] = [];
+  links.map(link => {
+    toolsLink.push(link.to)
+  })
+  
   return (
     <>
       <div className="relative">
@@ -87,12 +92,12 @@ function DropdownMenuMore({
           className={
             iconMode ?
               (listOfLinks.includes(currentLinkPath) ? 
-                "bg-pink-600 text-white rounded-full" :
-                "text-slate-400 hover:text-pink-300"
+                "bg-primary-dim text-black rounded-full" :
+                "text-slate-400 hover:text-primary/20"
               ) + 
               ' h-12 p-3 pr-1 active:scale-90 transition-all items-center justify-center flex cursor-pointer' :
               (listOfLinks.includes(currentLinkPath) ? 
-                'text-[26px] text-pink-500 font-bold' : 
+                'text-[26px] text-primary-dim font-bold' : 
                 'text-[24px] text-slate-400') +
               ' hover:bg-white/5 transition-all duration-300 pl-3 pr-1 py-1 rounded-full active:scale-95 tracking-tight cursor-pointer flex items-center'
           }
@@ -101,9 +106,9 @@ function DropdownMenuMore({
           {
             iconMode ?
               <span style={{fontSize: '32px'}} className="material-symbols-outlined">
-                {listOfLinks.includes(currentLinkPath) ? LinksIcon[currentLinkPath] : LinksIcon[lastUsedLink]}
+                {listOfLinks.includes(currentLinkPath) ? LinksIcon[currentLinkPath] : 'Apps'}
               </span> :
-              (listOfLinks.includes(currentLinkPath) ? LinksName[currentLinkPath] : LinksName[lastUsedLink])
+              (toolsLink.includes(currentLinkPath) ? LinksName[currentLinkPath] : 'Utils')
           }
 
           <span
@@ -111,7 +116,9 @@ function DropdownMenuMore({
               (direction == 'up' ? (hidden ? '-rotate-z-180 ' : '') : (hidden ? '' : '-rotate-z-180 ')) +
               // (!hidden && direction === 'up' ? '-rotate-z-0' : '-rotate-z-180') +
               // (!hidden && direction === 'down' ? ' -rotate-z-180' : ' -rotate-z-0') +
-              (iconMode ? (listOfLinks.includes(currentLinkPath) ? ' text-white' : 'text-slate-400') : (listOfLinks.includes(currentLinkPath) ? ' text-pink-500' :  ' text-slate-400')) + " material-symbols-outlined ml-1 pointer-events-none text-xl font-bold transition-all"
+              (iconMode ? 
+                (listOfLinks.includes(currentLinkPath) ? ' text-black' : 'text-slate-400') 
+                : (listOfLinks.includes(currentLinkPath) ? ' text-primary-dim' :  ' text-slate-400')) + " material-symbols-outlined ml-1 pointer-events-none text-xl font-bold transition-all"
             }
           >
             expand_more
@@ -123,7 +130,7 @@ function DropdownMenuMore({
           className={
             (direction === "down" ? 'top-12' : 'bottom-12') +
             (hidden ? " opacity-0 pointer-events-none" : ' opacity-100 pointer-events-auto') +
-            " flex flex-col absolute z-10 bg-slate-900 border-2 border-outline-variant/25 divide-y-2 divide-outline-variant/25 rounded-[1.3125rem] w-full hover:ring-2 hover:ring-white/8 overflow-hidden transition-all"
+            " flex flex-col absolute z-10 bg-slate-900 border-2 border-outline-variant/25 divide-y-2 divide-outline-variant/25 rounded-sm w-full hover:ring-2 hover:ring-white/8 overflow-hidden transition-all"
           }
         >
           {
@@ -132,8 +139,8 @@ function DropdownMenuMore({
                 <button
                   className={
                     (currentLinkPath === properties.to ?
-                    "text-[21px] text-pink-500 font-bold" :
-                    "text-[18px] hover:text-[21px] text-slate-400 hover:text-pink-500 hover:font-bold") +
+                    "text-[21px] text-primary-dim font-bold" :
+                    "text-[18px] text-slate-400 hover:text-primary-dim hover:font-bold") +
                     " flex py-1 items-start cursor-pointer transition-all hover:bg-white/5"
                   }
                   onClick={() => {onGoto(properties.to); setHidden(true); setLastUsedLink(properties.to)}}
@@ -176,11 +183,11 @@ export default function DropdownMenu({
                     className={
                       iconMode ?
                       (currentLinkPath === properties.to ? 
-                        'bg-pink-600 text-white rounded-full' : 
+                        'bg-primary-dim text-black rounded-full' : 
                         'text-slate-400 hover:text-pink-300') +
                         ' h-12 p-3 active:scale-90 transition-all items-center justify-center flex cursor-pointer' :
                       (currentLinkPath === properties.to ? 
-                        'text-[26px] text-pink-500 font-bold' : 
+                        'text-[26px] text-primary-dim font-bold' : 
                         'text-[24px] text-slate-400') +
                       ' hover:bg-white/5 transition-all duration-300 px-3 py-1 rounded-full active:scale-95 tracking-tight cursor-pointer flex items-center'
                     }

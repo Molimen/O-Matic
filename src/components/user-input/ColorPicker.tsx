@@ -9,7 +9,7 @@ export default function ColorPicker({
 }) {
   return (
     <>
-      <div className="input-color flex flex-col box-content rounded-3xl p-4 gap-3 w-full max-w-60 h-70 bg-surface-container">
+      <div className="input-color flex flex-col box-content rounded-3xl rounded-t-xl p-4 gap-3 w-full max-w-60 h-70 bg-surface-container">
         <HexColorPicker color={color} onChange={(newColor) => onChange(newColor.toLocaleUpperCase().replace(/^#/, ""))} />
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(24px,100%),1fr))] gap-1">

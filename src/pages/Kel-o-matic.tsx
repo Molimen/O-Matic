@@ -360,7 +360,7 @@ export default function Kel() {
             <InputSelect
               name="Generation Type"
               dataset={GENERATIONTYPEDATA}
-              value={generationType}
+              value={generationType.charAt(0).toUpperCase() + generationType.slice(1)}
               onChange={(e) => setGenerationType(e)}
             />
           </div>
@@ -368,7 +368,7 @@ export default function Kel() {
           <InputSelect
             name="Type Search"
             dataset={TYPESEARCHDATA}
-            value={typeSearch}
+            value={typeSearch.charAt(0).toUpperCase() + typeSearch.slice(1)}
             onChange={(e) => {setTypeSearch(e); setDisplayGroups(undefined); setMessageBoard("Nothing to Do")}}
           />
 
@@ -399,7 +399,7 @@ export default function Kel() {
 
             <div className="relative flex flex-col gap-2">
               <div className="flex items-center justify-between w-full bg-surface-container-low border border-surface-container rounded-full px-6 h-15 md:mt-8 gap-2">
-                <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+                <label className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
                   Smart Finder
                 </label>
 
@@ -427,15 +427,15 @@ export default function Kel() {
         />}
 
         {<ButtonProcess
-          name="DOWNLOAD/SHARE GROUP"
+          name="DOWNLOAD/SHARE"
           icon="download"
           onClick={() => void captureGroups()}
           visualPriority='secondary'
         />}
       </div>
 
-      <div className="max-w-4xl mx-auto mt-12 px-6">
-        <div ref={captureGroupsRef} className={`p-6 relative glass-panel rounded-lg border border-surface-container-highest ${typeof displayGroup === 'undefined' ? "hidden" : ""}`}>
+      <div className="max-w-4xl mx-auto mt-12 px-3">
+        <div ref={captureGroupsRef} className={`p-4 relative glass-panel rounded-lg border border-surface-container-highest ${typeof displayGroup === 'undefined' ? "hidden" : ""}`}>
           <div className="flex items-center bg-surface-container-highest border border-surface-container-highestest rounded-full px-6 mb-6">
             <input
               className="w-full bg-transparent border-0 py-4 text-on-surface focus:ring-0 font-medium text-3xl text-center font-SF-Pro-Regular"
@@ -444,12 +444,12 @@ export default function Kel() {
             />
           </div>
 
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(90px,100%),1fr))] gap-6">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(120px,100%),1fr))] gap-4">
             {displayGroup?.map((group) => (
               <div 
-                className='p-2 pb-4 glass-panel rounded-4xl border border-surface-container-highestest flex flex-col items-center'
+                className='p-2 pb-4 glass-panel rounded-lg border border-surface-container-highestest flex flex-col items-center'
               >
-                <span className='text-xl flex text-center leading-5 mt-1'>Group<br />{displayGroup.indexOf(group)+1}</span>
+                <span className='text-xl flex text-center leading-5 mt-1 pb-1'>Group {displayGroup.indexOf(group)+1}</span>
                 <div className='bg-white h-0.75 w-[80%] mb-1 mt-1'></div>
                 <div className='flex flex-col items-center'>
                   {group.map((student) => (

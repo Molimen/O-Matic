@@ -16,7 +16,7 @@ export default function InputNumber({
   return (
     <>
       <div className="relative flex flex-col gap-2">
-        <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+        <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
           {name}
         </span>
 

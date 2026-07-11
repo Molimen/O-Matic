@@ -23,11 +23,11 @@ export default function MessageInformation({
   return (
     <>
       <div className="relative flex flex-col gap-2">
-        <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80 px-1">
+        <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-secondary px-1">
           {name}
         </span>
 
-        <span className={`transition duration-350 w-full rounded-full py-4 px-6 text-xl ${colorType} ${bgColorType}`}>
+        <span className={`transition duration-350 w-full rounded-md py-4 px-6 text-xl ${colorType} ${bgColorType}`}>
           {message}
         </span>
       </div>
