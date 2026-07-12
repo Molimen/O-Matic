@@ -23,12 +23,13 @@ export default async function getStudentsData(cls: number) {
   try {
     // const response = await fetch('https://o-matic-person.molimen.workers.dev/?type=students');
     
-    // const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=studentsNewSquared&index=${cls}`, {
-    //   headers: { "X-API-Key": import.meta.env.VITE_API_KEY }
-    // });
-    const response = await fetch(`http://127.0.0.1:8787/?type=studentsNewSquared&index=${cls}`, {
+    const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=studentsNewSquared&index=${cls}`, {
       headers: {"X-API-Key": import.meta.env.VITE_API_KEY}
     });
+
+    // const response = await fetch(`http://127.0.0.1:8787/?type=studentsNewSquared&index=${cls}`, {
+    //   headers: {"X-API-Key": import.meta.env.VITE_API_KEY}
+    // });
 
     // const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=studentsNew&index=${cls}`);
     if (!response.ok) throw new Error("Failed to fetch student data");
