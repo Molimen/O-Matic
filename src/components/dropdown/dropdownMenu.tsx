@@ -55,7 +55,6 @@ function DropdownMenuMore({
 
   const currentLinkPath = location.pathname;
   const listOfLinks = links.map((link) => link.to);
-  const [lastUsedLink, setLastUsedLink] = useState(listOfLinks.includes(currentLinkPath) ? currentLinkPath : listOfLinks[0]);
 
   const LinksName = Object.fromEntries(
     links.map((link) => [link.to, link.label])
@@ -143,7 +142,7 @@ function DropdownMenuMore({
                     "text-[18px] text-slate-400 hover:text-primary-dim hover:font-bold") +
                     " flex py-1 items-start cursor-pointer transition-all hover:bg-white/5"
                   }
-                  onClick={() => {onGoto(properties.to); setHidden(true); setLastUsedLink(properties.to)}}
+                  onClick={() => {onGoto(properties.to); setHidden(true)}}
                 >
                   <MarqueeText>{properties.label}</MarqueeText>
                 </button>
