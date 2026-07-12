@@ -26,3 +26,5 @@ dist-ssr
 copy-paste-place.txt
 
 README.md
+
+.env.local
