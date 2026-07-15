@@ -22,7 +22,7 @@ export default async function getStudentsData(cls: number) {
 
   try {
     // const response = await fetch('https://o-matic-person.molimen.workers.dev/?type=students');
-    
+
     const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=studentsNewSquared&index=${cls}`, {
       headers: {"X-API-Key": import.meta.env.VITE_API_KEY}
     });

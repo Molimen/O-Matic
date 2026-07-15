@@ -679,6 +679,16 @@ export default function Home() {
             <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
               <div className="testimonial-text">okaay thanks a lot yaa █████████ nanti ██████ pake</div>
             </div>
+
+            <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
+              <div className="testimonial-text">
+                8C 9E 9E 98 A6 40 AE 92 98 98 40 A4 8A A6 92 8E 9C 14.<br></br>
+                AE 92 A6 8A 40 A0 98 82 B2 8A A4 A6 40 AE 92 98 98 40 9A 82 96 8A 40 82 40 88 A4 82 AE 14.<br></br>
+                84 AA A8 40 9E 9C 98 B2 40 82 40 A8 A4 AA 8A 40 8E 8A 9C 92 AA A6 40 AE 92 98 98 40 Ae 92 9C 42<br></br>
+                output = HEX {"<<"} 1;<br></br>
+                text = hexToString(output);
+              </div>
+            </div>
           </div>
           
           
@@ -697,6 +707,16 @@ export default function Home() {
 
             <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
               <div className="testimonial-text">okaay thanks a lot yaa █████████ nanti ██████ pake</div>
+            </div>
+
+            <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
+              <div className="testimonial-text">
+                8C 9E 9E 98 A6 40 AE 92 98 98 40 A4 8A A6 92 8E 9C 14.<br></br>
+                AE 92 A6 8A 40 A0 98 82 B2 8A A4 A6 40 AE 92 98 98 40 9A 82 96 8A 40 82 40 88 A4 82 AE 14.<br></br>
+                84 AA A8 40 9E 9C 98 B2 40 82 40 A8 A4 AA 8A 40 8E 8A 9C 92 AA A6 40 AE 92 98 98 40 Ae 92 9C 42<br></br>
+                output = HEX {">>"} 1;<br></br>
+                text = hexToString(output);
+              </div>
             </div>
           </div>
         </div>
