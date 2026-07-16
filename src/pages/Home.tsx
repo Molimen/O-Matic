@@ -659,11 +659,28 @@ export default function Home() {
         </div>
       </section>
       
-      <section id="testimonial-proof" className='max-w-4xl mx-auto mt-60'>
+      <section id="testimonial-proof" className='max-w-4xl mx-auto mt-60 relative'>
+        <button
+          popoverTarget='secret-element' popoverTargetAction="toggle"
+          className="absolute top-[-15%] left-[5%] mx-auto px-4 py-1 rounded-full [background:linear-gradient(-67.69deg,#009dcc,#a3eaff_40%,#a3eaff_70.67%,#e9faff)] text-on-primary-fixed font-bold text-lg hover:shadow-[0_0_20px_#a3eaff] transition-all active:scale-95 group flex items-center gap-2 pointer-events-auto opacity-1"
+        >
+          secret quote
+        </button>
+        <div popover='auto' id="secret-element" className="fixed top-1/2 -translate-y-1/2 p-3 backdrop-blur-2xl bg-[#173b2399] border-2 border-[#0d832773] box-border rounded-sm max-w-125 w-[80vw] mx-auto">
+          <div className="testimonial-text text-emerald-400 select-text">
+            8C 9E 9E 98 A6 40 AE 92 98 98 40 A4 8A A6 92 8E 9C 14.<br></br>
+            AE 92 A6 8A 40 A0 98 82 B2 8A A4 A6 40 AE 92 98 98 40 9A 82 96 8A 40 82 40 88 A4 82 AE 14.<br></br>
+            84 AA A8 40 9E 9C 98 B2 40 82 40 A8 A4 AA 8A 40 8E 8A 9C 92 AA A6 40 AE 92 98 98 40 Ae 92 9C 42<br></br>
+            output = HEX {">>"} 1;<br></br>
+            text = hexToString(output);<br></br><br></br>
+            <span className='text-red-400 select-none'>Tap or click outside the box to close</span>
+          </div>
+        </div>
         <h2 style={{fontFamily: 'QuanticoBold'}} className='text-[38px] xsm:text-[42px] text-center text-balance px-4 leading-12 mb-18'>Feedbacks from our friends</h2>
         <div ref={trackRef} style={{maskImage: 'linear-gradient(transparent, black 15% 85%,transparent)'}} className='max-w-xl mx-auto h-100 '>
           
           <div className="testimonial-group max-w-md w-[90%] mx-auto flex flex-col gap-4 pb-4">
+            
             <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
               <div className="testimonial-text">hee aku mau bilang makasii yaa buat ██ sama ████████ udah bikinin ituu, walaupun aku bkn yg sekretaris nya yaa tapi aku jg ikut coba-coba, seruu bangett ioo wkwkkw</div>
             </div>
@@ -680,19 +697,11 @@ export default function Home() {
               <div className="testimonial-text">okaay thanks a lot yaa █████████ nanti ██████ pake</div>
             </div>
 
-            <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
-              <div className="testimonial-text">
-                8C 9E 9E 98 A6 40 AE 92 98 98 40 A4 8A A6 92 8E 9C 14.<br></br>
-                AE 92 A6 8A 40 A0 98 82 B2 8A A4 A6 40 AE 92 98 98 40 9A 82 96 8A 40 82 40 88 A4 82 AE 14.<br></br>
-                84 AA A8 40 9E 9C 98 B2 40 82 40 A8 A4 AA 8A 40 8E 8A 9C 92 AA A6 40 AE 92 98 98 40 Ae 92 9C 42<br></br>
-                output = HEX {">>"} 1;<br></br>
-                text = hexToString(output);
-              </div>
-            </div>
           </div>
           
           
           <div className="testimonial-group max-w-md w-[90%] mx-auto flex flex-col gap-4 pb-4">
+            
             <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
               <div className="testimonial-text">hee aku mau bilang makasii yaa buat ██ sama ████████ udah bikinin ituu, walaupun aku bkn yg sekretaris nya yaa tapi aku jg ikut coba-coba, seruu bangett ioo wkwkkw</div>
             </div>
@@ -709,15 +718,6 @@ export default function Home() {
               <div className="testimonial-text">okaay thanks a lot yaa █████████ nanti ██████ pake</div>
             </div>
 
-            <div className="testimonial-element p-3 bg-[#0F1C2799] border border-[#003B4D73] box-border rounded-sm">
-              <div className="testimonial-text">
-                8C 9E 9E 98 A6 40 AE 92 98 98 40 A4 8A A6 92 8E 9C 14.<br></br>
-                AE 92 A6 8A 40 A0 98 82 B2 8A A4 A6 40 AE 92 98 98 40 9A 82 96 8A 40 82 40 88 A4 82 AE 14.<br></br>
-                84 AA A8 40 9E 9C 98 B2 40 82 40 A8 A4 AA 8A 40 8E 8A 9C 92 AA A6 40 AE 92 98 98 40 Ae 92 9C 42<br></br>
-                output = HEX {">>"} 1;<br></br>
-                text = hexToString(output);
-              </div>
-            </div>
           </div>
         </div>
       </section>
