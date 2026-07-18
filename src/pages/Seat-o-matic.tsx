@@ -9,15 +9,18 @@ import shuffleArray from '../utils/shuffleArray';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
 import { snapdom } from "@zumer/snapdom";
 import CLASSNUMBER from '../utils/classNumber';
+import Accordion from '@/components/Accordion';
 
 function SeatRowGenerator11037({
   studentsSeats,
   girlColor,
-  boyColor
+  boyColor,
+  isFirstGenVar
 }: {
   studentsSeats: studentsType[] | undefined;
   girlColor: string;
   boyColor: string;
+  isFirstGenVar : boolean;
 }) {
   const seats = [];
 
@@ -51,7 +54,7 @@ function SeatRowGenerator11037({
     return "FFFFFF"
   };
 
-  const getNameOrAbsent = (counter: number, num: number, type: "name" | "absent") => {
+  const getNameOrAbsent = (counter: number, num: number, type: "name" | "absent", emptySeatChar: string = "??") => {
     if (typeof studentsSeats !== 'undefined') {
       if (typeof studentsSeats[counter] !== 'undefined') {
         if (typeof studentsSeats[counter][num] !== 'undefined') {
@@ -66,7 +69,11 @@ function SeatRowGenerator11037({
       }
     }
 
-    return "??"
+    if (isFirstGenVar) {
+      return "??";
+    } else {
+      return <mark className="text-red-500 bg-transparent">{emptySeatChar}</mark>;
+    }
   };
 
   let counter = 0;
@@ -79,9 +86,9 @@ function SeatRowGenerator11037({
             <div className='flex-1 h-[11cqw] box-border flex items-center justify-center py-[1.5cqw]'>
               <span
                 className='text-[6.4cqw] tracking-wider text-center flex items-center justify-center w-full'
-                style={{color: `#${getColor(counter, num, i)}`}}
+                style={{color: `#${getColor(counter, num, i, )}`}}
               >
-                {getNameOrAbsent(counter, num, 'absent')}
+                {getNameOrAbsent(counter, num, 'absent', "XX")}
               </span>
             </div>
           ))}
@@ -105,6 +112,9 @@ function SeatRowGenerator11037({
 }
 
 export default function Seat() {
+
+  const [isFirstGen, setIsFirstGen] = useState(true);
+
   const CLASSDATA = [
     {name: 'XI-1', value: '1'},
     {name: 'XI-2', value: '2'},
@@ -143,7 +153,7 @@ export default function Seat() {
   }
 
   async function generateSeats() {
-    console.log(classSelected);
+    //console.log(classSelected);
 
     const seatOrder: studentsType[] = [];
 
@@ -271,7 +281,7 @@ export default function Seat() {
       }
     }
 
-    console.log(seatOrder);
+    //console.log(seatOrder);
 
     setDisplaySeats(seatOrder);
 
@@ -301,7 +311,7 @@ export default function Seat() {
 
     const canvas = await result.toCanvas();
 
-    console.log(canvas);
+    //console.log(canvas);
 
     const pngBlob = await new Promise<Blob>((resolve, reject) => {
       canvas.toBlob((blob) => {
@@ -343,7 +353,7 @@ export default function Seat() {
               name="Class"
               dataset={CLASSDATA}
               value={`${CLASSNUMBER}-${classSelected}`}
-              onChange={(e) => {setClassSelected(e); setDisplaySeats(undefined)}}
+              onChange={(e) => {setClassSelected(e); setDisplaySeats(undefined); setIsFirstGen(true)}}
             />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -352,35 +362,51 @@ export default function Seat() {
                 Set Color
               </span>
 
-              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-4xl px-7 py-3 gap-2">
-                <div className="relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none">
-                  <span className="material-symbols-outlined">palette</span>
-                  <div className="text-xl">
-                    <mark className="ml-1 text-pink-500 bg-transparent">
-                      Girls
-                    </mark>{' '}
-                    color
+              <Accordion
+                header={
+                  <div className="w-auto h-8 relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none mr-auto">
+                    <span className="material-symbols-outlined">palette</span>
+                    <div className="text-lg xsm:text-xl">
+                      <mark style={{color: `#${girlColor}`}} className="ml-1 bg-transparent">
+                        Girls
+                      </mark>{" "}
+                      color
+                    </div>
                   </div>
-                </div>
-
-                <ColorPicker color={girlColor} pallete={DEFAULTPALLETE} onChange={setGirlColor}/>
-              </div>
+                }
+              >
+                <ColorPicker
+                  color={girlColor}
+                  pallete={DEFAULTPALLETE}
+                  onChange={setGirlColor}
+                />
+              </Accordion>
             </div>
 
             <div className="relative flex flex-col gap-2">
-              <div className="relative flex flex-col items-center w-full bg-surface-container-highest border border-surface-container-highestest rounded-4xl px-7 py-3 gap-2 mt-0 md:mt-8">
-                <div className="relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none">
-                  <span className="material-symbols-outlined">palette</span>
-                  <div className="text-xl">
-                    <mark className="ml-1 text-blue-500 bg-transparent">
-                      Boys
-                    </mark>{' '}
-                    color
-                  </div>
-                </div>
+              <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-transparent hidden md:inline px-1">
+                never give you up
+              </span>
 
-                <ColorPicker color={boyColor} pallete={DEFAULTPALLETE} onChange={setBoyColor}/>
-              </div>
+              <Accordion
+                  header={
+                    <div className="w-auto h-8 relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none mr-auto">
+                      <span className="material-symbols-outlined">palette</span>
+                      <div className="text-xl">
+                        <mark style={{color: `#${boyColor}`}} className={`ml-1 bg-transparent`}>
+                          Boys
+                        </mark>{" "}
+                        color
+                      </div>
+                    </div>
+                  }
+                >
+                  <ColorPicker
+                    color={boyColor}
+                    pallete={DEFAULTPALLETE}
+                    onChange={setBoyColor}
+                  />
+              </Accordion>
             </div>
           </div>
 
@@ -389,7 +415,7 @@ export default function Seat() {
       </div>
 
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
-        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon="settings_input_component" onClick={() => void generateSeats()}/>}
+        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon="settings_input_component" onClick={() => {void generateSeats(); void setIsFirstGen(false)}}/>}
 
         {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE" icon="download" onClick={() => void captureSeats()}/>}
       </div>
@@ -477,7 +503,7 @@ export default function Seat() {
             </div>
 
             <div className='w-full flex-1 flex flex-col items-start justify-around px-[1.8cqw] box-border'>
-              <SeatRowGenerator11037 studentsSeats={displaySeats} girlColor={girlColor} boyColor={boyColor} />
+              <SeatRowGenerator11037 studentsSeats={displaySeats} girlColor={girlColor} boyColor={boyColor} isFirstGenVar={isFirstGen}/>
             </div>
           </div>
         </div>
