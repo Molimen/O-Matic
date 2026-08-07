@@ -344,7 +344,7 @@ export default function Kel() {
                 className="material-symbols-outlined"
                 style={{ fontSize: '28px' }}
               >
-                help
+                {"\ue887"}
               </span>
             </button>
           </div>
@@ -422,13 +422,13 @@ export default function Kel() {
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
         {<ButtonProcess 
           name="PROCESS GROUP" 
-          icon="settings_input_component"
+          icon={"\ue8c0"}
           onClick={() => void generateGroups()} 
         />}
 
         {<ButtonProcess
           name="DOWNLOAD/SHARE"
-          icon="download"
+          icon={"\uf090"}
           onClick={() => void captureGroups()}
           visualPriority='secondary'
         />}

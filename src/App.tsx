@@ -75,7 +75,7 @@ export default function App() {
             <a href="https://github.com/Molimen/O-Matic" rel="noopener">
               Source Code
             </a>{' '}
-            • 3.0.1
+            • 3.0.2
           </p>
 
           <NavLink key="/aboutUs" to="/about" className="flex gap-2">

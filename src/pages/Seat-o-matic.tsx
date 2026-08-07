@@ -250,8 +250,30 @@ export default function Seat() {
         throw new Error("ECCOCa!");
       }
     }
+    
+    // --------- (START) ----------- randomize boy-only pair's position, and also make seat-chart alternate like grade 10 
+    let newSeatOrder = shuffleArray(seatOrder);
 
-    for (const seats of seatOrder) {
+    for (const [index, pair] of newSeatOrder.entries()) {
+      if (students.length % 2 !== 0) {
+        for (const individualStudent of pair) { // utk kasus jumlah murid ganjil
+          if (JSON.stringify(individualStudent) === JSON.stringify({absent: -1, gender: '', smartness: 0, name: '??'})) {
+            if (pair[0] !== individualStudent) { // weird logic but remember the if statement on line 270 exists
+              [pair[0], pair[1]] = [pair[1], pair[0]]
+            }
+            [newSeatOrder[index], newSeatOrder[newSeatOrder.length - 1]] = [newSeatOrder[newSeatOrder.length - 1], newSeatOrder[index]]
+            break
+          }
+        }
+      }
+      
+      if ((index > 3 && index < 8) || (index > 11 && index < 16)) { //nge-swap baris ke-2 dan ke-4
+        [pair[0], pair[1]] = [pair[1], pair[0]]
+      }
+    }
+    // ------------------------ (END) ------------------------
+
+    for (const seats of newSeatOrder) {
       // code might accidentally swap already gud partner!
       for (const seatCurrent of seats) {
         for (const seatCheck of seats) {
@@ -259,7 +281,7 @@ export default function Seat() {
 
           // console.log(isCompatible(seatCurrent, seatCheck), seatCurrent, seatCheck);
           if (!isCompatible(seatCurrent, seatCheck)) {
-            for (const findingPartners of seatOrder) {
+            for (const findingPartners of newSeatOrder) {
               let exit = false;
               for (const findingPartner of findingPartners) {
                 if (isCompatible(seatCurrent, findingPartner) && seatCheck.gender === findingPartner.gender) {
@@ -267,8 +289,8 @@ export default function Seat() {
 
                   // console.log(structuredClone(seatCurrent), structuredClone(findingPartner), structuredClone(seatCheck), structuredClone(findingPartners));
 
-                  seatOrder[seatOrder.indexOf(seats)][seats.indexOf(seatCheck)] = findingPartner;
-                  seatOrder[seatOrder.indexOf(findingPartners)][findingPartners.indexOf(findingPartner)] = temp;
+                  newSeatOrder[newSeatOrder.indexOf(seats)][seats.indexOf(seatCheck)] = findingPartner;
+                  newSeatOrder[newSeatOrder.indexOf(findingPartners)][findingPartners.indexOf(findingPartner)] = temp;
 
                   exit = true;
                   break;
@@ -281,9 +303,9 @@ export default function Seat() {
       }
     }
 
-    //console.log(seatOrder);
+    //console.log(newSeatOrder);
 
-    setDisplaySeats(seatOrder);
+    setDisplaySeats(newSeatOrder);
 
     setMessageBoard("Seats generate successfully!");
   }
@@ -365,7 +387,7 @@ export default function Seat() {
               <Accordion
                 header={
                   <div className="w-auto h-8 relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none mr-auto">
-                    <span className="material-symbols-outlined">palette</span>
+                    <span className="material-symbols-outlined pl-2">{"\ue40a"}</span>
                     <div className="text-lg xsm:text-xl">
                       <mark style={{color: `#${girlColor}`}} className="ml-1 bg-transparent">
                         Girls
@@ -391,7 +413,7 @@ export default function Seat() {
               <Accordion
                   header={
                     <div className="w-auto h-8 relative flex flex-row items-center gap-1 ml-2 sm:ml-0 select-none mr-auto">
-                      <span className="material-symbols-outlined">palette</span>
+                      <span className="material-symbols-outlined pl-2">{"\ue40a"}</span>
                       <div className="text-xl">
                         <mark style={{color: `#${boyColor}`}} className={`ml-1 bg-transparent`}>
                           Boys
@@ -415,9 +437,9 @@ export default function Seat() {
       </div>
 
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
-        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon="settings_input_component" onClick={() => {void generateSeats(); void setIsFirstGen(false)}}/>}
+        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon={"\ue8c0"} onClick={() => {void generateSeats(); void setIsFirstGen(false)}}/>}
 
-        {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE" icon="download" onClick={() => void captureSeats()}/>}
+        {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE" icon={"\uf090"} onClick={() => void captureSeats()}/>}
       </div>
 
       {/* <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
@@ -495,7 +517,7 @@ export default function Seat() {
 
             <div className='w-full flex flex-col items-center py-0 px-[4cqw] gap-[0.2cqw] box-border'>
               <div className='w-[22cqw] h-[11cqw] flex items-center justify-center bg-surface-container-highest border-[0.2cqw] border-surface-container-highestest box-content rounded-[1.5cqw]'>
-                <span style={{fontSize: '10cqw'}} className='material-symbols-outlined text-white'>account_box</span>
+                <span style={{fontSize: '10cqw'}} className='material-symbols-outlined text-white'>{'\ue851'}</span>
               </div>
               <span className='text-[2.4cqw] tracking-wider w-[22cqw] text-primary-fixed/80'>
                 Meja Guru
