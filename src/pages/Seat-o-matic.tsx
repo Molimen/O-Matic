@@ -15,12 +15,14 @@ function SeatRowGenerator11037({
   studentsSeats,
   girlColor,
   boyColor,
-  isFirstGenVar
+  isFirstGenVar,
+  isLoadingSeat,
 }: {
   studentsSeats: studentsType[] | undefined;
   girlColor: string;
   boyColor: string;
   isFirstGenVar : boolean;
+  isLoadingSeat : boolean;
 }) {
   const seats = [];
 
@@ -54,7 +56,7 @@ function SeatRowGenerator11037({
     return "FFFFFF"
   };
 
-  const getNameOrAbsent = (counter: number, num: number, type: "name" | "absent", emptySeatChar: string = "??") => {
+  const getNameOrAbsent = (counter: number, num: number, type: "name" | "absent", emptySeatChar: string = "??", isLoading: boolean) => {
     if (typeof studentsSeats !== 'undefined') {
       if (typeof studentsSeats[counter] !== 'undefined') {
         if (typeof studentsSeats[counter][num] !== 'undefined') {
@@ -72,7 +74,7 @@ function SeatRowGenerator11037({
     if (isFirstGenVar) {
       return "??";
     } else {
-      return <mark className="text-red-500 bg-transparent">{emptySeatChar}</mark>;
+      return isLoading ? <mark className="text-amber-300 bg-transparent">{emptySeatChar}</mark> : <mark className="text-red-500 bg-transparent">{emptySeatChar}</mark>
     }
   };
 
@@ -88,7 +90,7 @@ function SeatRowGenerator11037({
                 className='text-[6.4cqw] tracking-wider text-center flex items-center justify-center w-full'
                 style={{color: `#${getColor(counter, num, i, )}`}}
               >
-                {getNameOrAbsent(counter, num, 'absent', "XX")}
+                {getNameOrAbsent(counter, num, 'absent', isLoadingSeat ? "OO" : "XX", isLoadingSeat)}
               </span>
             </div>
           ))}
@@ -111,9 +113,12 @@ function SeatRowGenerator11037({
   )
 }
 
+let lastSeatOrder: studentsType[]; //-------- CONTINUE THIS -----------
+
 export default function Seat() {
 
   const [isFirstGen, setIsFirstGen] = useState(true);
+  const [isLoadingSeat, setIsLoadingSeat] = useState(true);
 
   const CLASSDATA = [
     {name: 'XI-1', value: '1'},
@@ -153,17 +158,20 @@ export default function Seat() {
   }
 
   async function generateSeats() {
-    //console.log(classSelected);
 
     const seatOrder: studentsType[] = [];
 
     let students: studentsType;
     try {
+      setIsLoadingSeat(true)
       students = await getStudentsData(Number(classSelected));
+      setIsLoadingSeat(false)
     } catch {
       setMessageBoard('Something went wrong while fetching data.', "error");
       return;
     }
+
+    
 
     let blacklistsPartner: blacklistsType;
     try {
@@ -251,26 +259,39 @@ export default function Seat() {
       }
     }
     
+    lastSeatOrder = seatOrder;
+    console.log(lastSeatOrder);
+
     // --------- (START) ----------- randomize boy-only pair's position, and also make seat-chart alternate like grade 10 
     let newSeatOrder = shuffleArray(seatOrder);
 
-    for (const [index, pair] of newSeatOrder.entries()) {
-      if (students.length % 2 !== 0) {
+    if (students.length % 2 !== 0) {
+      for (const [index, pair] of newSeatOrder.entries()) {
         for (const individualStudent of pair) { // utk kasus jumlah murid ganjil
           if (JSON.stringify(individualStudent) === JSON.stringify({absent: -1, gender: '', smartness: 0, name: '??'})) {
-            if (pair[0] !== individualStudent) { // weird logic but remember the if statement on line 270 exists
+            [newSeatOrder[index], newSeatOrder[newSeatOrder.length - 1]] = [newSeatOrder[newSeatOrder.length - 1], newSeatOrder[index]]
+            if (pair[0] === individualStudent) {
               [pair[0], pair[1]] = [pair[1], pair[0]]
             }
-            [newSeatOrder[index], newSeatOrder[newSeatOrder.length - 1]] = [newSeatOrder[newSeatOrder.length - 1], newSeatOrder[index]]
             break
           }
         }
       }
-      
-      if ((index > 3 && index < 8) || (index > 11 && index < 16)) { //nge-swap baris ke-2 dan ke-4
-        [pair[0], pair[1]] = [pair[1], pair[0]]
+      for (const [index, pair] of newSeatOrder.entries()) {
+        if ((index > 3 && index < 8) || (index > 11 && index < 16)) { //nge-swap baris ke-2 dan ke-4
+          if (index !== newSeatOrder.length - 1) {
+            [pair[0], pair[1]] = [pair[1], pair[0]];
+          }         
+        }
+      }
+    } else {
+      for (const [index, pair] of newSeatOrder.entries()) {
+        if ((index > 3 && index < 8) || (index > 11 && index < 16)) { //nge-swap baris ke-2 dan ke-4
+          [pair[0], pair[1]] = [pair[1], pair[0]]
+        }
       }
     }
+    
     // ------------------------ (END) ------------------------
 
     for (const seats of newSeatOrder) {
@@ -525,7 +546,7 @@ export default function Seat() {
             </div>
 
             <div className='w-full flex-1 flex flex-col items-start justify-around px-[1.8cqw] box-border'>
-              <SeatRowGenerator11037 studentsSeats={displaySeats} girlColor={girlColor} boyColor={boyColor} isFirstGenVar={isFirstGen}/>
+              <SeatRowGenerator11037 studentsSeats={displaySeats} girlColor={girlColor} boyColor={boyColor} isFirstGenVar={isFirstGen} isLoadingSeat={isLoadingSeat}/>
             </div>
           </div>
         </div>

@@ -17,14 +17,14 @@ export default function App() {
 
   const links_new = [
     [
-      { to: '/', label: 'Home', icon: 'home' },
+      { to: '/', label: 'Home', icon: '\ue88a' },
     ],
     [
-      { to: '/kel-o-matic', label: 'Kel', icon: 'groups' },
-      { to: '/seat-o-matic', label: 'Seat', icon: 'event_seat' },
+      { to: '/kel-o-matic', label: 'Kel', icon: '\uf233' },
+      { to: '/seat-o-matic', label: 'Seat', icon: '\ue903' },
     ],
     [
-      { to: '/about', label: 'About', icon: 'info' },
+      { to: '/about', label: 'About', icon: '\ue88e' },
     ],
   ]
 
@@ -75,7 +75,7 @@ export default function App() {
             <a href="https://github.com/Molimen/O-Matic" rel="noopener">
               Source Code
             </a>{' '}
-            • 3.0.2
+            • 3.0.3
           </p>
 
           <NavLink key="/aboutUs" to="/about" className="flex gap-2">
