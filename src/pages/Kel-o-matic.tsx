@@ -310,22 +310,22 @@ export default function Kel() {
         onExit={() => setNotificationState(true)}
       >
         <div className="mb-8 flex justify-between items-center min-h-auto">
-          <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-pink-400">Input explanation</div>
+          <div className="text-[clamp(25px,5vw,30px)] leading-[clamp(1.5rem,1vw,0.2rem)] uppercase tracking-[0.15em] font-bold text-secondary">Input explanation</div>
         </div>
         
-        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Generation type</div>
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary">Generation type</div>
         <div className="tracking-wide">Controls result format — <b><i>Student Absent</i></b> shows numbers, <b><i>Student Name</i></b> shows short names.</div>
         <div className="h-4"></div>
 
-        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Type search</div>
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary">Type search</div>
         <div className="tracking-wide">Choose <b><i>Group</i></b> to set number of groups, or <b><i>Member</i></b> to set students per group.</div>
         <div className="h-4"></div>
 
-        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">How much</div>
-        <div className="tracking-wide">The 'n' for Type Search. For example, <mark style={{backgroundColor: "#743665", color: "white"}}><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark style={{backgroundColor: "#743665", color: "white"}}><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary">How much</div>
+        <div className="tracking-wide">The 'n' for Type Search. For example, <mark className='bg-secondary-dim/50 px-1' style={{color: "white"}}><i>Member</i> + {totalItem}</mark> = {totalItem} students per group. <mark className='bg-secondary-dim/50 px-1' style={{color: "white"}}><i>Group</i> + {totalItem}</mark> = {totalItem} groups (with <b>student amount</b> and <b>group's student gender ratio</b> spread evenly).</div>
         <div className="h-4"></div>
 
-        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-pink-500/80">Smart finder</div>
+        <div className="text-[16px] uppercase tracking-[0.2em] font-bold text-primary">Smart finder</div>
         <div className="tracking-wide">Currently unavailable. because the dev is not in the mood to add this feature {"</3"}. this is a intensive feature and chalange dev moral to add this.</div>
       </NotificationWindow>
 

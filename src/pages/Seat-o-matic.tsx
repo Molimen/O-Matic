@@ -113,7 +113,7 @@ function SeatRowGenerator11037({
   )
 }
 
-let lastSeatOrder: studentsType[]; //-------- CONTINUE THIS -----------
+let lastSeatOrders:studentsType[][] = []; //-------- CONTINUE THIS -----------
 
 export default function Seat() {
 
@@ -259,8 +259,46 @@ export default function Seat() {
       }
     }
     
-    lastSeatOrder = seatOrder;
-    console.log(lastSeatOrder);
+
+    const previousPairs = new Set<string>();
+
+    for (const lastSeatOrder of lastSeatOrders) {
+      for (const [student1, student2] of lastSeatOrder) {
+        if (student1.absent === -1 || student2.absent === -1) {
+          continue
+        }
+
+        previousPairs.add(
+          [student1.absent, student2.absent]
+                .sort((a, b) => a - b)
+                .join("-")
+        )
+      }
+    }
+
+    let samePairCount: number = 0;
+    for (const [student1, student2] of seatOrder) {
+      const pairKey = [student1.absent, student2.absent]
+      .sort((a, b) => a - b)
+      .join("-")
+
+      if (previousPairs.has(pairKey)) {
+        samePairCount++;
+      }
+    }
+
+
+    if (samePairCount <= 1) {
+      lastSeatOrders.push(seatOrder);
+  
+      if (lastSeatOrders.length > 5) {
+          lastSeatOrders.shift();
+      }
+      console.log(lastSeatOrders)
+    } else {
+        console.log('too much same pair')
+        generateSeats()
+    }
 
     // --------- (START) ----------- randomize boy-only pair's position, and also make seat-chart alternate like grade 10 
     let newSeatOrder = shuffleArray(seatOrder);
