@@ -23,7 +23,7 @@ export default function NotFound() {
         </span>
 
         <div className="mt-10">
-          <ButtonElement name="Go to Homepage" icon="home" onClick={changePage} />
+          <ButtonElement name="Go to Homepage" icon={"\ue88a"} onClick={changePage} />
         </div>
       </div>
     </>

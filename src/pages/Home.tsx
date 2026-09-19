@@ -575,7 +575,7 @@ export default function Home() {
           Get Started
           <span
             className="material-symbols-outlined group-hover:translate-x-2 transition-transform">
-            arrow_forward
+            {"\ue5c8"}
           </span>
         </button>
 
@@ -591,17 +591,17 @@ export default function Home() {
       {/* ── Feature Cards ── */}
       <section ref={featureItemsRef} id="features" className="max-w-4xl mx-auto mt-0 px-6 text-center relative py-12 h-lvh z-30 flex flex-col justify-center ">
         <div className="feature-cards-item w-[max(70%,265px)] h-auto bg-[#0F1C2799] my-5 mx-auto flex flex-col justify-center items-center rounded-[12px] border-2 border-[#003B4D73] py-3 backdrop-blur-sm text-left">
-          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#FF8C69]">bolt</div>
+          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#FF8C69]">{"\uea0b"}</div>
           <h3 className="w-[90%] h-auto my-[0.35rem] text-[22px] font-medium">Fast & Simple</h3>
           <span className="w-[90%] h-auto box-border p-1 text-on-surface-variant text-[16px] text-balance">Just open your browser and you're good to go, no install.</span>
         </div>
         <div className="feature-cards-item w-[max(70%,265px)] h-auto bg-[#0F1C2799] my-5 mx-auto flex flex-col justify-center items-center rounded-[12px] border-2 border-[#003B4D73] py-3 backdrop-blur-sm text-left">
-          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#ff8c69]">devices</div>
+          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#ff8c69]">{"\ue1b1"}</div>
           <h3 className="w-[90%] h-auto my-[0.35rem] text-[22px] font-medium">Works Everywhere</h3>
           <span className="w-[90%] h-auto box-border p-1 text-on-surface-variant text-[16px] text-balance">Accessible from any device. Phone, tablet, laptop or desktop</span>
         </div>
         <div className="feature-cards-item w-[max(70%,265px)] h-auto bg-[#0F1C2799] my-5 mx-auto flex flex-col justify-center items-center rounded-[12px] border-2 border-[#003B4D73] py-3 backdrop-blur-sm text-left">
-          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#FF8C69]">save</div>
+          <div className="w-[90%] h-12.5 material-symbols-outlined flex justify-center items-center text-5xl! text-[#FF8C69]">{"\ue161"}</div>
           <h3 className="w-[90%] h-auto my-[0.35rem] text-[22px] font-medium">Specialized Data</h3>
           <span className="w-[90%] h-auto box-border p-1 text-on-surface-variant text-[16px] text-balance">Students datas used here are specialized for SMAKUSDA</span>
         </div>

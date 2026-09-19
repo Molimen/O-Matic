@@ -27,7 +27,7 @@ export default function Accordion({ header, children }: AccordionProps) {
                 " material-symbols-outlined text-on-surface-variant pointer-events-none text-xl font-bold transition-all px-1.5 w-9 h-6"
               }
             >
-              expand_more
+              {"\ue313"}
             </span>
           </button>
   

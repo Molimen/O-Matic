@@ -67,7 +67,7 @@ export default function App() {
       <footer className="border-t border-outline-variant/10">
         <div className="max-w-4xl w-full mx-auto px-6 py-6 pb-24 md:py-6 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-8">
           <div className="debug-menu flex items-center gap-2 grayscale opacity-50">
-            <span className="material-symbols-outlined">terminal</span>
+            <span className="material-symbols-outlined">{"\ueb8e"}</span>
             <span className="font-bold tracking-tighter">O-Matic</span>
           </div>
 
@@ -75,12 +75,12 @@ export default function App() {
             <a href="https://github.com/Molimen/O-Matic" rel="noopener">
               Source Code
             </a>{' '}
-            • 3.0.3
+            • 3.0.4
           </p>
 
           <NavLink key="/aboutUs" to="/about" className="flex gap-2">
             <span className="text-slate-500 hover:text-primary transition-colors flex flex-row gap-2 items-center">
-              <span className="material-symbols-outlined">info</span>
+              <span className="material-symbols-outlined">{"\ue88e"}</span>
               <p className="text-lg">About Us</p>
             </span>
           </NavLink>

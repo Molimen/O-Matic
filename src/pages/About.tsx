@@ -154,7 +154,7 @@ export default function About() {
                 </a>
 
                 <button className="cursor-pointer h-10" onClick={() => setNotificationState(false)}>
-                  <span className="material-symbols-outlined hover:text-primary transition-colors" style={{fontSize: "41px"}}>terminal</span>
+                  <span className="material-symbols-outlined hover:text-primary transition-colors" style={{fontSize: "41px"}}>{"\ueb8e"}</span>
                 </button>
               </div>
             </div>

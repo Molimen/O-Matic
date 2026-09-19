@@ -47,7 +47,7 @@ export default function Dropdown({
               " material-symbols-outlined text-on-surface-variant pointer-events-none text-xl font-bold transition-all"
             }
           >
-            expand_more
+            {"\ue313"}
           </span>
         </button>
 

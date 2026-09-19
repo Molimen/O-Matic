@@ -16,7 +16,7 @@ export default function NotificationWindow({
             className="sticky top-0 ml-auto text-on-surface-variant hover:text-on-surface active:scale-90 transition-all w-fit z-101 cursor-pointer"
             onClick={onExit}
           >
-            <span className="material-symbols-outlined">close</span>
+            <span className="material-symbols-outlined">{"\ue5cd"}</span>
           </button>
 
           <div className="flex flex-col relative z-10 pl-2 pr-6">

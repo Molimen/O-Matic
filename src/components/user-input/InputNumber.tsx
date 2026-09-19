@@ -25,7 +25,7 @@ export default function InputNumber({
             className="text-on-surface-variant hover:text-on-surface transition text-xl font-bold material-symbols-outlined cursor-pointer"
             onClick={() => onChange(undefined, "minus")}
           >
-            remove
+            {"\ue15b"} {/* CHANGE THIS TO SOMETHING UNICODE IDK, TO AVOID TRANSLATION ISSUE */}
           </button>
 
           <input
@@ -41,7 +41,7 @@ export default function InputNumber({
             className="text-on-surface-variant hover:text-on-surface transition text-xl font-bold material-symbols-outlined cursor-pointer"
             onClick={() => onChange(undefined, "add")}
             >
-            add
+            {"\ue145"} {/* CHANGE THIS TO SOMETHING UNICODE IDK, TO AVOID TRANSLATION ISSUE */}
           </button>
         </div>
       </div>

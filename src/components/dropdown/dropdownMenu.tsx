@@ -169,6 +169,10 @@ export default function DropdownMenu({
 }) {
   const currentLinkPath = location.pathname;
 
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [currentLinkPath])
+
   return (
     <>
       {
