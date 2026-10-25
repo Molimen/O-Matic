@@ -2,11 +2,13 @@ export default function ButtonElement({
   name, 
   icon, 
   visualPriority = "primary",
+  isDisabled,
   onClick
 }: {
   name: string;
   icon: string;
   visualPriority?: "primary" | "secondary";
+  isDisabled?: boolean;
   onClick: () => void;
 }) {
 
@@ -19,6 +21,7 @@ export default function ButtonElement({
           "w-full md:w-auto md:min-w-75 box-border bg-[#0f1c2799] border-2 border-primary-dim/90 text-on-surface text-lg md:text-xl font-bold py-5 px-12 rounded-full hover:shadow-[0_0_30px_rgba(163,234,255,0.4)] active:scale-95 transition-all flex items-center justify-center gap-6 cursor-pointer"
         }
         onClick={onClick}
+        disabled={isDisabled}
       >
         <span className="material-symbols-outlined">{icon}</span>
         {name}

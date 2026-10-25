@@ -19,6 +19,10 @@ export default defineConfig({
 
   server: {
     allowedHosts: ["service-appetite-overdress.ngrok-free.dev"],
+    proxy: {'/api': 'http://localhost:8788'},
+    watch: {
+      ignored: ['**/.wrangler/**', '**/.dev.vars**'],
+    }
   },
 
 })

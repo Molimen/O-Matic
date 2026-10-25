@@ -11,8 +11,12 @@ import InputSelect from '../components/user-input/InputSelect';
 import InputNumber from '../components/user-input/InputNumber';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
 import CLASSNUMBER from '../utils/classNumber';
+import { useUsage, UsageIndicator } from '@/services/usageIndicator';
 
 export default function Kel() {
+
+  const {usage, refresh} = useUsage()
+
   const GENERATIONTYPEDATA = [
     {name: 'Student Absent', value: 'absent'},
     {name: 'Student Name', value: 'name'},
@@ -246,6 +250,7 @@ export default function Kel() {
     // if (isThereAnyChange) setMessageBoard("Groups generated successfully!!", "info");
     // else 
     setMessageBoard("Groups generated successfully!");
+    refresh()
   }
 
   async function captureGroups() {
@@ -433,6 +438,8 @@ export default function Kel() {
           visualPriority='secondary'
         />}
       </div>
+
+      <UsageIndicator usage={usage}/>
 
       <div className="max-w-4xl mx-auto mt-12 px-3">
         <div ref={captureGroupsRef} className={`p-4 relative glass-panel rounded-lg border border-surface-container-highest ${typeof displayGroup === 'undefined' ? "hidden" : ""}`}>

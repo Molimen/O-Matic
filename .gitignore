@@ -28,3 +28,4 @@ copy-paste-place.txt
 README.md
 
 .env.local
+.dev.vars

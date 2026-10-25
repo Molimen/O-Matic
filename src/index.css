@@ -221,6 +221,16 @@ img {
   will-change: transform;
 }
 
+button:disabled {
+  transition: all 0.5s ease;
+  background: #414653;
+  color: #B0B7C4;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+button:disabled:active {
+  transform: scale(1);
+}
 
 
 #secret-element[popover] {

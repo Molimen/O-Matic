@@ -3,13 +3,14 @@ import InputSelect from '../components/user-input/InputSelect';
 import MessageInformation, {type messageTypeCheck} from '../components/user-input/Message';
 import useLocalStorage from '../utils/useLocalStorage';
 import ColorPicker from "../components/user-input/ColorPicker";
-import { useRef, useState } from 'react';
-import getStudentsData, { type studentsType, type studentType } from '../services/getStudentsData';
+import { useEffect, useRef, useState } from 'react';
+import getStudentsData, { LimitError, type studentsType, type studentType } from '../services/getStudentsData';
 import shuffleArray from '../utils/shuffleArray';
 import getBlacklistsData, {type blacklistsType} from '../services/getBlacklistsData';
 import { snapdom } from "@zumer/snapdom";
 import CLASSNUMBER from '../utils/classNumber';
 import Accordion from '@/components/Accordion';
+import { useUsage ,UsageIndicator } from '@/services/usageIndicator';
 
 function SeatRowGenerator11037({
   studentsSeats,
@@ -72,6 +73,9 @@ function SeatRowGenerator11037({
     }
 
     if (isFirstGenVar) {
+      if (studentsSeats !== undefined) {
+        return <mark className="text-red-500 bg-transparent">XX</mark>
+      }
       return "??";
     } else {
       return isLoading ? <mark className="text-amber-300 bg-transparent">{emptySeatChar}</mark> : <mark className="text-red-500 bg-transparent">{emptySeatChar}</mark>
@@ -117,6 +121,11 @@ let lastSeatOrders:studentsType[][] = []; //-------- CONTINUE THIS -----------
 
 export default function Seat() {
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [limitReached, setLimitReached] = useState(false)
+  const {usage, refresh} = useUsage()
+
   const [isFirstGen, setIsFirstGen] = useState(true);
   const [isLoadingSeat, setIsLoadingSeat] = useState(true);
 
@@ -157,40 +166,22 @@ export default function Seat() {
     setMessageType(messageType);
   }
 
+  useEffect(() => {
+    if (localStorage.getItem('latestSeatOrder')) {
+      setDisplaySeats(JSON.parse(localStorage.getItem('latestSeatOrder')!))
+    }    
+  },[])
+
   async function generateSeats() {
 
-    const seatOrder: studentsType[] = [];
+    let seatOrder: studentsType[] = [];
 
     let students: studentsType;
-    try {
-      setIsLoadingSeat(true)
-      students = await getStudentsData(Number(classSelected));
-      setIsLoadingSeat(false)
-    } catch {
-      setMessageBoard('Something went wrong while fetching data.', "error");
-      return;
-    }
 
-    
-
-    let blacklistsPartner: blacklistsType;
-    try {
-      blacklistsPartner = await getBlacklistsData(Number(classSelected));
-    } catch {
-      setMessageBoard('Something went wrong while fetching data for a particular.', "error");
-      return;
-    }
-
-    let studentsGirls: studentsType = [];
-    let studentsBoys: studentsType = [];
-
-    for (const student of students) {
-      if (student.gender === "P") studentsGirls.push(student);
-      else if (student.gender === "L") studentsBoys.push(student);
-    }
-
-    studentsGirls = shuffleArray(studentsGirls);
-    studentsBoys = shuffleArray(studentsBoys);
+    // usage-limit stuff ------
+    setLoading(true);
+    setError(null);
+    // ------------------------
 
     // note: this will check a to b.
     // A is student origin. B is to check if compatible.
@@ -208,97 +199,170 @@ export default function Seat() {
       return true;
     };
 
-    let whiletruecatcher3000 = 0;
-    while (true) {
-      if (studentsGirls.length === 0 || studentsBoys.length === 0) {
-        while (true) {
-          if (studentsGirls.length === 1) {
-            const studentGirl = studentsGirls.pop();
+    try {
+      setIsLoadingSeat(true)      
+      students = await getStudentsData(Number(classSelected));     
+    } catch (e) {
+      if (e instanceof LimitError) {
+        setLimitReached(true)
+      } else {
+        setError(e instanceof Error ? e.message : 'an error happened')
+      }
+      setMessageBoard('Something went wrong while fetching data.', "error");
+      return;
+    } finally {
+      setIsLoadingSeat(false)
+      setLoading(false)
+    }
 
-            if (studentGirl) seatOrder.push([{absent: -1, gender: "", smartness: 0, name: "??"}, studentGirl]);
-            break;
-          } else if (studentsBoys.length === 1) {
-            const studentBoy = studentsBoys.pop();
+    let blacklistsPartner: blacklistsType;
+    try {
+      blacklistsPartner = await getBlacklistsData(Number(classSelected));
+    } catch {
+      setMessageBoard('Something went wrong while fetching data for a particular.', "error");
+      return;
+    }
 
-            if (studentBoy) seatOrder.push([studentBoy, {absent: -1, gender: "", smartness: 0, name: "??"}]);
-            break;
+    let studentsGirls: studentsType = [];
+    let studentsBoys: studentsType = [];
+
+    for (const student of students) {
+      if (student.gender === "P") studentsGirls.push(student);
+      else if (student.gender === "L") studentsBoys.push(student);
+    }
+
+    let studentsGirlsBackup: studentsType = structuredClone(studentsGirls);
+    let studentsBoysBackup: studentsType = structuredClone(studentsBoys);
+
+    let bestSeatOrder: typeof seatOrder | null = null;
+    let bestSamePairCount = Infinity;
+
+    for (let attempt = 0; attempt < 100; attempt++) {
+      // Reset hasil
+      seatOrder = [];
+
+      if (studentsBoys.length === 0 || studentsGirls.length === 0) {
+        studentsGirls = structuredClone(studentsGirlsBackup);
+        studentsBoys = structuredClone(studentsBoysBackup);
+      }
+
+      studentsGirls = shuffleArray(studentsGirls);
+      studentsBoys = shuffleArray(studentsBoys);
+      
+
+      let whiletruecatcher3000 = 0;
+      while (true) {
+        if (studentsGirls.length === 0 || studentsBoys.length === 0) {
+          while (true) {
+            if (studentsGirls.length === 1) {
+              const studentGirl = studentsGirls.pop();
+
+              if (studentGirl) seatOrder.push([{absent: -1, gender: "", smartness: 0, name: "??"}, studentGirl]);
+              break;
+            } else if (studentsBoys.length === 1) {
+              const studentBoy = studentsBoys.pop();
+
+              if (studentBoy) seatOrder.push([studentBoy, {absent: -1, gender: "", smartness: 0, name: "??"}]);
+              break;
+            }
+
+            if (studentsGirls.length > 1) {
+              const studentGirl1 = studentsGirls.pop();
+              const studentGirl2 = studentsGirls.pop();
+
+              if (studentGirl1 && studentGirl2) seatOrder.push([studentGirl1, studentGirl2]);
+            } else if (studentsBoys.length > 1) {
+              const studentBoy1 = studentsBoys.pop();
+              const studentBoy2 = studentsBoys.pop();
+
+              if (studentBoy1 && studentBoy2) seatOrder.push([studentBoy1, studentBoy2]);
+            }
+
+            if (studentsGirls.length === 0 && studentsBoys.length === 0) {
+              const seat = seatOrder.pop();
+
+              if (seat) seatOrder.splice(Math.floor(Math.random() * seatOrder.length), 0, seat);
+              break;
+            }
           }
-
-          if (studentsGirls.length > 1) {
-            const studentGirl1 = studentsGirls.pop();
-            const studentGirl2 = studentsGirls.pop();
-
-            if (studentGirl1 && studentGirl2) seatOrder.push([studentGirl1, studentGirl2]);
-          } else if (studentsBoys.length > 1) {
-            const studentBoy1 = studentsBoys.pop();
-            const studentBoy2 = studentsBoys.pop();
-
-            if (studentBoy1 && studentBoy2) seatOrder.push([studentBoy1, studentBoy2]);
-          }
-
-          if (studentsGirls.length === 0 && studentsBoys.length === 0) {
-            const seat = seatOrder.pop();
-
-            if (seat) seatOrder.splice(Math.floor(Math.random() * seatOrder.length), 0, seat);
-            break;
-          }
+          break;
         }
+
+        const studentGirl = studentsGirls.pop();
+        const studentBoy = studentsBoys.pop();
+        if (studentGirl && studentBoy) {
+          seatOrder.push([studentBoy, studentGirl]);
+        }
+
+        whiletruecatcher3000++;
+
+        if (whiletruecatcher3000 > 1000) {
+          throw new Error("ECCOCa!");
+        }
+      }
+
+      const previousPairs = new Set<string>();
+
+      for (const lastSeatOrder of lastSeatOrders) {
+        for (const [student1, student2] of lastSeatOrder) {
+          if (
+            student1.absent === -1 ||
+            student2.absent === -1
+          ) {
+            continue;
+          }
+
+          previousPairs.add(
+            [student1.absent, student2.absent]
+              .sort((a, b) => a - b)
+              .join("-")
+          );
+        }
+      }
+
+      let samePairCount = 0;
+
+      for (const [student1, student2] of seatOrder) {
+        if (
+          student1.absent === -1 ||
+          student2.absent === -1
+        ) {
+          continue;
+        }
+
+        const pairKey = [student1.absent, student2.absent]
+          .sort((a, b) => a - b)
+          .join("-");
+
+        if (previousPairs.has(pairKey)) {
+          samePairCount++;
+        }
+      }
+
+      if (samePairCount < bestSamePairCount) {
+        bestSamePairCount = samePairCount;
+        bestSeatOrder = structuredClone(seatOrder);
+      }
+
+      if (samePairCount <= 1) {
+        bestSeatOrder = structuredClone(seatOrder);
         break;
       }
-
-      const studentGirl = studentsGirls.pop();
-      const studentBoy = studentsBoys.pop();
-      if (studentGirl && studentBoy) {
-        seatOrder.push([studentBoy, studentGirl]);
-      }
-
-      whiletruecatcher3000++;
-
-      if (whiletruecatcher3000 > 1000) {
-        throw new Error("ECCOCa!");
-      }
-    }
-    
-
-    const previousPairs = new Set<string>();
-
-    for (const lastSeatOrder of lastSeatOrders) {
-      for (const [student1, student2] of lastSeatOrder) {
-        if (student1.absent === -1 || student2.absent === -1) {
-          continue
-        }
-
-        previousPairs.add(
-          [student1.absent, student2.absent]
-                .sort((a, b) => a - b)
-                .join("-")
-        )
-      }
     }
 
-    let samePairCount: number = 0;
-    for (const [student1, student2] of seatOrder) {
-      const pairKey = [student1.absent, student2.absent]
-      .sort((a, b) => a - b)
-      .join("-")
-
-      if (previousPairs.has(pairKey)) {
-        samePairCount++;
-      }
+    if (bestSeatOrder === null) {
+      throw new Error("Tidak ada seatOrder yang dihasilkan.");
     }
 
+    seatOrder = bestSeatOrder;
 
-    if (samePairCount <= 1) {
-      lastSeatOrders.push(seatOrder);
-  
-      if (lastSeatOrders.length > 5) {
-          lastSeatOrders.shift();
-      }
-      console.log(lastSeatOrders)
-    } else {
-        console.log('too much same pair')
-        generateSeats()
+    lastSeatOrders.push(seatOrder);
+
+    if (lastSeatOrders.length > 5) {
+      lastSeatOrders.shift();
     }
+
+    console.log(lastSeatOrders);
 
     // --------- (START) ----------- randomize boy-only pair's position, and also make seat-chart alternate like grade 10 
     let newSeatOrder = shuffleArray(seatOrder);
@@ -365,8 +429,9 @@ export default function Seat() {
     //console.log(newSeatOrder);
 
     setDisplaySeats(newSeatOrder);
-
+    localStorage.setItem("latestSeatOrder", JSON.stringify(newSeatOrder))
     setMessageBoard("Seats generate successfully!");
+    refresh()
   }
 
   async function captureSeats() {
@@ -425,6 +490,8 @@ export default function Seat() {
         setMessageBoard('The groups has been shared trough download!');
     }
   }
+
+  const ranOut = limitReached || usage?.remaining === 0
 
   return (
     <>
@@ -496,68 +563,12 @@ export default function Seat() {
       </div>
 
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
-        {<ButtonProcess visualPriority='primary' name="PROCESS SEAT" icon={"\ue8c0"} onClick={() => {void generateSeats(); void setIsFirstGen(false)}}/>}
+        {<ButtonProcess isDisabled={loading || ranOut} visualPriority='primary' name={loading ? 'PROCESSING...' : 'PROCESS SEAT'} icon={"\ue8c0"} onClick={() => {void generateSeats(); void setIsFirstGen(false)}}/>}
 
         {<ButtonProcess visualPriority='secondary' name="DOWNLOAD/SHARE" icon={"\uf090"} onClick={() => void captureSeats()}/>}
       </div>
-
-      {/* <div className="max-w-4xl mx-auto mt-12 px-2 pointer-events-none">
-        <div
-          ref={captureSeatsRef}
-          className="relative w-[99%] h-[99%] aspect-square mx-auto font-bold bg-white border-3 border-[#222222]"
-          style={{
-            containerType: 'inline-size',
-            fontFamily: 'SFProDisplayRegular',
-          }}
-        >
-          <span className="absolute text-[1.3cqw] text-black">
-            Made by: o-matic.pages.dev
-          </span>
-
-          <div className="absolute left-[18%] top-[1.1%] w-[63.9%] h-[1.2%] bg-[#bb9679] border md:border-3 border-black rounded-[3px]"></div>
-          <div className="absolute left-[97.2%] top-[7.2%] w-[1.3%] h-[17.1%] bg-[#bb9679] border md:border-3 border-black rounded-[3px]"></div>
-          <div className="flex justify-center items-center absolute left-[1.4%] top-[12.3%] w-[16.2%] h-[9.6%] bg-[#ff9fcf] border md:border-3 border-black rounded-[3px]">
-            <span
-              className="material-symbols-outlined text-pink-500"
-              style={{ fontSize: '6cqw' }}
-            >
-              school
-            </span>
-          </div>
-
-          <div className="absolute left-[40.3%] top-[8%] w-[5.8%] h-[4.6%]" style={{backgroundColor: `#${girlColor}`}}></div>
-          <div className="absolute left-[40.3%] top-[14.9%] w-[5.8%] h-[4.6%]" style={{backgroundColor: `#${boyColor}`}}></div>
-          <span
-            className="absolute left-[47.6%] top-[8%] w-[52%] text-black"
-            style={{ fontSize: '5cqw', lineHeight: '5cqw' }}
-          >
-            <b>Perempuan</b>
-          </span>
-          <span
-            className="absolute left-[47.6%] top-[15%] w-[52%] text-black"
-            style={{ fontSize: '5cqw', lineHeight: '5cqw' }}
-          >
-            <b>Laki-Laki</b>
-          </span>
-          <span
-            className="absolute top-[24.4%] w-[99.4%] text-black"
-            style={{ fontSize: '3.35cqw' }}
-          >
-            📍hari senin-kamis sesuai ini 👇, jumat bebas!
-          </span>
-
-          <div
-            className="absolute top-[33.6%] w-full h-full text-black"
-            style={{ fontSize: '3.35cqw' }}
-          >
-            <SeatColElement left="0" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(0, 4)} />
-            <SeatColElement left="26.8%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(4, 8)} />
-            <SeatColElement left="53.7%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(8, 12)} />
-            <SeatColElement left="82%" boyColor={boyColor} girlColor={girlColor} studentsSeats={displaySeats?.slice(12, 16)} />
-          </div>
-        </div>
-      </div> */}
-
+      
+      <UsageIndicator usage={usage} errorMsg={error}/>
       <div className='max-w-4xl mx-auto mt-12 px-2 pointer-events-none'>
         <div
           ref={captureSeatsRef} 
