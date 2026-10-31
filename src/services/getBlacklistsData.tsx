@@ -1,3 +1,6 @@
+import { LimitError } from "./getStudentsData";
+import { ApiError } from "./getStudentsData";
+
 export type blacklistsType = {
   absent: number;
   blacklistsPartner: number[];
@@ -12,11 +15,10 @@ export default async function getBlacklistsData(cls: number) {
   }
 
   try {
-    const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNewSquared&index=${cls}`, {
-      headers: {"X-API-Key": import.meta.env.VITE_API_KEY}
-    });
-    // const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNew&index=${cls}`);
-    if (!response.ok) throw new Error("Failed to fetch student data");
+    const response = await fetch(`/api/blacklist?index=${cls}`);
+
+    if (response.status === 429) throw new LimitError("Usage Limit reached");
+    if (!response.ok) throw new ApiError("Failed to fetch student data");
 
     const rawdata = await response.json() as blacklistsType;
 
@@ -24,8 +26,28 @@ export default async function getBlacklistsData(cls: number) {
     blacklistsCacheClass = cls;
 
     return rawdata;
-  } catch {
+  } catch (e) {
+    console.error(e);
+    if (e instanceof LimitError || e instanceof ApiError) throw e;
     if (!navigator.onLine) throw new Error("No internet connection");
     throw new Error("Connection issue, please try again later :>");
   }
+
+  // try {
+  //   const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNewSquared&index=${cls}`, {
+  //     headers: {"X-API-Key": import.meta.env.VITE_API_KEY}
+  //   });
+  //   // const response = await fetch(`https://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNew&index=${cls}`);
+  //   if (!response.ok) throw new Error("Failed to fetch student data");
+
+  //   const rawdata = await response.json() as blacklistsType;
+
+  //   blacklistsCache = rawdata;
+  //   blacklistsCacheClass = cls;
+
+  //   return rawdata;
+  // } catch {
+  //   if (!navigator.onLine) throw new Error("No internet connection");
+  //   throw new Error("Connection issue, please try again later :>");
+  // }
 }

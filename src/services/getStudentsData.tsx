@@ -13,7 +13,7 @@ export type studentType = {
 };
 
 export class LimitError extends Error {}
-class ApiError extends Error {}
+export class ApiError extends Error {}
 
 export default async function getStudentsData(cls: number) {
 

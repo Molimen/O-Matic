@@ -68,7 +68,7 @@ app.get('/tool', async (c) => {
 
   const index = Number(c.req.query('index'))
   if (!Number.isInteger(index) || index < 0) {
-    return c.json({ error: 'Index tidak valid' }, 400)
+    return c.json({ error: 'Index no valid' }, 400)
   }
   
   // Cek cache server dulu
@@ -119,6 +119,22 @@ app.get('/usage', async (c) => {
     remaining: Math.max(0, MAX - used),
     resetAt: active?.resetAt ?? null, 
   })
+})
+app.get('/blacklist', async (c) => {
+  const index = Number(c.req.query('index'))
+
+  const blacklistUpstream = await fetch(
+    `https://o-matic-person.molimen.workers.dev/?type=blacklistsPartnerNewSquared&index=${index}`,
+    { headers: { 'X-API-Key': c.env.API_KEY, 'Origin': 'https://o-matic.pages.dev' } }
+  )
+  if (!blacklistUpstream.ok) {
+    console.log('UPSTREAM GAGAL:', blacklistUpstream.status)
+    return c.json({ error: 'Gagal mengambil data' }, 502)
+  }
+
+  const daftarIrengData = blacklistUpstream.json()
+
+  return c.json(daftarIrengData)
 })
 app.onError((err, c) => {
   console.error('ERROR BACKEND:', err.message)
