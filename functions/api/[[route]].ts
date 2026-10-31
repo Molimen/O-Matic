@@ -44,8 +44,13 @@ type Env = { Bindings: { LIMIT_KV: KVNamespace; API_KEY: string } }
 const app = new Hono<Env>().basePath('/api')
 
 app.use('*', async (c, next) => {
-  if (!c.env.LIMIT_KV) return c.json({ error: 'Binding LIMIT_KV tidak ada' }, 500)
-  if (!c.env.API_KEY) return c.json({ error: 'Secret API_KEY tidak ada' }, 500)
+  const missing: string[] = []
+  if (!c.env.LIMIT_KV) missing.push('LIMIT_KV')
+  if (!c.env.API_KEY) missing.push('API_KEY')
+
+  if (missing.length > 0) {
+    return c.json({ error: 'Konfigurasi kurang', missing }, 500)
+  }
   await next()
 })
 
