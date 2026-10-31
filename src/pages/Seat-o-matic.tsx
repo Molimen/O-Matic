@@ -117,7 +117,8 @@ function SeatRowGenerator11037({
   )
 }
 
-let lastSeatOrders:studentsType[][] = []; //-------- CONTINUE THIS -----------
+let lastSeatOrders:studentsType[][] = []; 
+let blacklistIsEmpty: boolean;
 
 export default function Seat() {
 
@@ -186,15 +187,18 @@ export default function Seat() {
     // note: this will check a to b.
     // A is student origin. B is to check if compatible.
     const isCompatible = (studentA: studentType, studentB: studentType) => {
-      for (const student of blacklistsPartner) {
-        if (student.absent === studentA.absent) {
-          for (const studentBlacklistAbsent of student.blacklistsPartner) {
-            if (studentBlacklistAbsent === studentB.absent) {
-              return false;
+      if (!blacklistIsEmpty) {
+        for (const student of blacklistsPartner) {
+          if (student.absent === studentA.absent) {
+            for (const studentBlacklistAbsent of student.blacklistsPartner) {
+              if (studentBlacklistAbsent === studentB.absent) {
+                return false;
+              }
             }
           }
         }
       }
+      
 
       return true;
     };
@@ -218,6 +222,11 @@ export default function Seat() {
     let blacklistsPartner: blacklistsType;
     try {
       blacklistsPartner = await getBlacklistsData(Number(classSelected));
+      if (Object.keys(blacklistsPartner).length === 0) {
+        blacklistIsEmpty = true
+      } else {
+        blacklistIsEmpty = false
+      }
     } catch {
       setMessageBoard('Something went wrong while fetching data for a particular.', "error");
       return;

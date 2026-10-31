@@ -132,6 +132,8 @@ app.get('/blacklist', async (c) => {
     return c.json({ error: 'Gagal mengambil data' }, 502)
   }
 
+  console.log(blacklistUpstream.text);
+
   const daftarIrengData = blacklistUpstream.json()
 
   return c.json(daftarIrengData)
