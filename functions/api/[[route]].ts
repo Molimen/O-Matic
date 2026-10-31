@@ -43,6 +43,12 @@ async function addUsage(c: Context<Env>, keys: string[], records: Rec[]) {
 type Env = { Bindings: { LIMIT_KV: KVNamespace; API_KEY: string } }
 const app = new Hono<Env>().basePath('/api')
 
+app.use('*', async (c, next) => {
+  if (!c.env.LIMIT_KV) return c.json({ error: 'Binding LIMIT_KV tidak ada' }, 500)
+  if (!c.env.API_KEY) return c.json({ error: 'Secret API_KEY tidak ada' }, 500)
+  await next()
+})
+
 const MAX = 8                        
 const WINDOW = 6 * 24 * 60 * 60      
 
@@ -111,7 +117,7 @@ app.get('/usage', async (c) => {
 })
 app.onError((err, c) => {
   console.error('ERROR BACKEND:', err.message)
-  return c.json({ error: 'Server error' }, 500)
+  return c.json({ error: 'Server error', detail: err.message }, 500)
 })
 
 app.get('/kvtest', async (c) => {
