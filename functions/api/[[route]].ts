@@ -3,9 +3,20 @@ import { handle } from 'hono/cloudflare-pages'
 import { getCookie, setCookie } from 'hono/cookie'
 import type { Context } from 'hono'
 
+const TOOLS: Record<string, {max: number}> = {
+  "seat-o-matic": { max: 3 },
+  "kel-o-matic" : { max: 8 },
+}
+
+function getTool(c: Context<Env>) {
+  const name = c.req.query('tool') ?? ''
+  return name in TOOLS ? name : null
+}
+
+
 type Rec = { count: number; resetAt: number }
 
-async function loadLimit(c: Context<Env>) {
+async function loadLimit(c: Context<Env>, tool: string) {
   const now = Math.floor(Date.now() / 1000)
   const ip = c.req.header('CF-Connecting-IP') ?? 'unknown'
 
@@ -17,7 +28,7 @@ async function loadLimit(c: Context<Env>) {
     })
   }
 
-  const keys = [`ip:${ip}`, `uid:${uid}`]
+  const keys = [`ip:${tool}:${ip}`, `uid:${tool}:${uid}`]
   const records: Rec[] = await Promise.all(
     keys.map(async (k) => {
       const raw = (await c.env.LIMIT_KV.get(k, 'json')) as Rec | null
@@ -54,15 +65,18 @@ app.use('*', async (c, next) => {
   await next()
 })
 
-const MAX = 8                        
-const WINDOW = 6 * 24 * 60 * 60      
 
+const WINDOW = 6 * 24 * 60 * 60      
 const CACHE_TTL = 300
 
 app.get('/tool', async (c) => {
-  const { keys, records } = await loadLimit(c)
+  const tool = getTool(c)
+  if (!tool) return c.json({ error: 'Alat kaga kenal blas' }, 400)
+  const max = TOOLS[tool].max
 
-  if (records.some((r) => r.count >= MAX)) {
+  const { keys, records } = await loadLimit(c, tool)
+
+  if (records.some((r) => r.count >= max)) {
     return c.json({ error: 'Batas pemakaian tercapai' }, 429)
   }
 
@@ -72,7 +86,7 @@ app.get('/tool', async (c) => {
   }
   
   // Cek cache server dulu
-  const cacheKey = `cache:${index}`
+  const cacheKey = `cache:${tool}:${index}`
   let result = await c.env.LIMIT_KV.get(cacheKey, 'json')
 
   if (result === null) {
@@ -95,10 +109,14 @@ app.get('/tool', async (c) => {
   return c.json(result)
 })
 app.get('/usage', async (c) => {
+  const tool = getTool(c)
+  if (!tool) return c.json({ error: 'Alat kaga kenal blas' }, 400)
+  const max = TOOLS[tool].max
+
   const ip = c.req.header('CF-Connecting-IP') ?? 'unknown'
   const uid = getCookie(c, 'uid')
 
-  const keys = uid ? [`ip:${ip}`, `uid:${uid}`] : [`ip:${ip}`]
+  const keys = uid ? [`ip:${tool}:${ip}`, `uid:${tool}:${uid}`] : [`ip:${tool}:${ip}`]
 
   const records = await Promise.all(
     keys.map(
@@ -115,8 +133,8 @@ app.get('/usage', async (c) => {
 
   c.header('Cache-Control', 'no-store')
   return c.json({
-    max: MAX,
-    remaining: Math.max(0, MAX - used),
+    max: max,
+    remaining: Math.max(0, max - used),
     resetAt: active?.resetAt ?? null, 
   })
 })

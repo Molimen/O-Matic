@@ -6,12 +6,12 @@ export type Usage = {
   resetAt: number | null
 }
 
-export function useUsage() {
+export function useUsage(toolname: string) {
   const [usage, setUsage] = useState<Usage | null>(null)
 
   const refresh = useCallback(async () => {
     try {
-      const res = await fetch('/api/usage')
+      const res = await fetch(`/api/usage?tool=${toolname}`)
       if (res.ok) setUsage((await res.json()) as Usage)
     } catch {
     }
@@ -46,8 +46,7 @@ export function UsageIndicator({ usage, errorMsg }: { usage: Usage | null, error
       {resetText && usage.remaining > 0 && (
         <span>Limit will reset on {resetText}</span>
       )}
-      <span className='inline-block'>{errorMsg}</span>
-      <span className='inline-block text-balance text-red-500 font-bold'>Be careful, the limit is also applied to Kel-O-Matic and it synchronizes between tools. Use it wisely.</span>
+      <span className='inline'>{errorMsg}</span>
     </div>
   )
 }

@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ButtonProcess from '../components/user-input/ButtonProcess'
 import MessageInformation, {type messageTypeCheck} from '../components/user-input/Message';
 import CLASSDATA from '../utils/classData';
-import getStudentsData, { type studentsType, type studentType } from '../services/getStudentsData';
+import getStudentsData, { LimitError, type studentsType, type studentType } from '../services/getStudentsData';
 import shuffleArray from '../utils/shuffleArray';
 import useLocalStorage from '../utils/useLocalStorage';
 import { snapdom } from '@zumer/snapdom';
@@ -15,7 +15,18 @@ import { useUsage, UsageIndicator } from '@/services/usageIndicator';
 
 export default function Kel() {
 
-  const {usage, refresh} = useUsage()
+  useEffect(() => {
+    const stored = localStorage.getItem('latestGroupChart')
+
+    console.log(stored)
+    if (stored && stored !== "undefined") {
+      setDisplayGroups(JSON.parse(stored))
+      console.log('truly displayed')
+    }
+    console.log('useEffect runs, the chart should spawn')
+  }, [])
+
+  const {usage, refresh} = useUsage('kel-o-matic')
 
   const GENERATIONTYPEDATA = [
     {name: 'Student Absent', value: 'absent'},
@@ -43,12 +54,16 @@ export default function Kel() {
 
   const [notificationState, setNotificationState] = useState(true);
 
+  const [limitReached, setLimitReached] = useState(false);
+  const [loading, setLoading] = useState(false)
+
   const setMessageBoard = (message: string, messageType: messageTypeCheck = "info") => {
     setMessage(message);
     setMessageType(messageType);
   }
 
   async function generateGroups() {
+    setLoading(true);
     console.log(totalItem, typeSearch, generationType, classSelected);
 
     let totalGroup = null;
@@ -58,17 +73,30 @@ export default function Kel() {
 
     let students: studentsType;
     try {
-      students = await getStudentsData(Number(classSelected));
-    } catch {
-      setMessageBoard('Something went wrong while fetching data.', "error");
+      students = await getStudentsData(Number(classSelected),'kel-o-matic');
+    } catch (e) {
+      if (e instanceof LimitError) {
+        setLimitReached(true);
+        setMessageBoard('Usage Limit Reached.',"error");
+      } else {
+        setMessageBoard('Something went wrong while fetching data.', "error");
+      }
       return;
+    } finally {
+      setLoading(false);
     }
 
     const studentsLength = students.length;
 
+    let blacklistIsEmpty: boolean
     let blacklistsPartner: blacklistsType;
     try {
       blacklistsPartner = await getBlacklistsData(Number(classSelected));
+      if (Object.keys(blacklistsPartner).length === 0) {
+        blacklistIsEmpty = true
+      } else {
+        blacklistIsEmpty = false
+      }
     } catch {
       setMessageBoard('Something went wrong while fetching data for a particular.', "error");
       return;
@@ -142,15 +170,18 @@ export default function Kel() {
     // note: this will check a to b.
     // A is student origin. B is to check if compatible.
     const isCompatible = (studentA: studentType, studentB: studentType) => {
-      for (const student of blacklistsPartner) {
-        if (student.absent === studentA.absent) {
-          for (const studentBlacklistAbsent of student.blacklistsPartner) {
-            if (studentBlacklistAbsent === studentB.absent) {
-              return false;
+      if (!blacklistIsEmpty) {
+        for (const student of blacklistsPartner) {
+          if (student.absent === studentA.absent) {
+            for (const studentBlacklistAbsent of student.blacklistsPartner) {
+              if (studentBlacklistAbsent === studentB.absent) {
+                return false;
+              }
             }
           }
         }
       }
+      
 
       return true;
     };
@@ -244,12 +275,14 @@ export default function Kel() {
 
 
     setDisplayGroups(groups);
-
+    localStorage.setItem('latestGroupChart', JSON.stringify(groups))
     console.log(groups);
 
     // if (isThereAnyChange) setMessageBoard("Groups generated successfully!!", "info");
     // else 
     setMessageBoard("Groups generated successfully!");
+    console.log('HERE GOES THE VAR WITH ANONYMOUS CONTENT')
+    console.log(displayGroup)
     refresh()
   }
 
@@ -307,6 +340,8 @@ export default function Kel() {
         setMessageBoard('The groups has been shared trough download!');
     }
   }
+
+  const ranOut = limitReached || usage?.remaining === 0;
 
   return (
     <>
@@ -425,8 +460,9 @@ export default function Kel() {
       </div>
 
       <div className="mt-12 flex justify-center items-center flex-col md:flex-row px-6 gap-6 max-w-4xl mx-auto">
-        {<ButtonProcess 
-          name="PROCESS GROUP" 
+        {<ButtonProcess
+          isDisabled = { ranOut || loading }
+          name={loading ? "PROCESSING..." : "PROCESS GROUP"} 
           icon={"\ue8c0"}
           onClick={() => void generateGroups()} 
         />}

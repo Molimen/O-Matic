@@ -15,10 +15,10 @@ export type studentType = {
 export class LimitError extends Error {}
 export class ApiError extends Error {}
 
-export default async function getStudentsData(cls: number) {
+export default async function getStudentsData(cls: number, toolname: string) {
 
   try {
-    const response = await fetch(`/api/tool?index=${cls}`);
+    const response = await fetch(`/api/tool?index=${cls}&tool=${toolname}`);
 
     if (response.status === 429) throw new LimitError("Usage Limit reached");
     if (!response.ok) throw new ApiError("Failed to fetch student data");

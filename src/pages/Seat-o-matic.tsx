@@ -125,7 +125,7 @@ export default function Seat() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [limitReached, setLimitReached] = useState(false)
-  const {usage, refresh} = useUsage()
+  const {usage, refresh} = useUsage('seat-o-matic')
 
   const [isFirstGen, setIsFirstGen] = useState(true);
   const [isLoadingSeat, setIsLoadingSeat] = useState(true);
@@ -205,10 +205,11 @@ export default function Seat() {
 
     try {
       setIsLoadingSeat(true)      
-      students = await getStudentsData(Number(classSelected));     
+      students = await getStudentsData(Number(classSelected), 'seat-o-matic');     
     } catch (e) {
       if (e instanceof LimitError) {
-        setLimitReached(true)
+        setLimitReached(true);
+        setMessageBoard('Usage Limit Reached.', "error")
       } else {
         setError(e instanceof Error ? e.message : 'an error happened')
       }
